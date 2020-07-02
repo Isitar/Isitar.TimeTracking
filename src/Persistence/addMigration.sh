@@ -1,0 +1,1 @@
+dotnet ef migrations add $1 -o Migrations --startup-project ../Api/Api.csproj --context DoenerDbContext
