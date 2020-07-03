@@ -35,12 +35,9 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var fsc = new FileStorageConfig();
-            Configuration.Bind(nameof(FileStorageConfig), fsc);
-            services.AddSingleton<FileStorageConfig>(fsc);
-            
+          
             services.AddControllers();
-            services.AddInfrastructure();
+            services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
             services.AddApplication();
 

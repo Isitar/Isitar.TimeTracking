@@ -4,13 +4,15 @@ namespace Isitar.TimeTracking.Persistence.Configurations
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class ProjectConfiguration : IEntityTypeConfiguration<Project>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Project> builder)
         {
-            builder.HasMany(u => u.AuditTrailEntries)
-                .WithOne();
-
+            builder.HasOne<User>(p => p.User)
+                .WithMany(u => u.Projects)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
             builder.HasOne(e => e.CreatedBy)
                 .WithMany()
                 .HasForeignKey(e => e.CreatedById);

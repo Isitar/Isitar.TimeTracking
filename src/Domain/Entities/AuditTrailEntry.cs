@@ -9,5 +9,8 @@ namespace Isitar.TimeTracking.Domain.Entities
         public Instant When { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }
+
+        public Guid CreatedById { get; set; }
+        public User CreatedBy { get; set; }
     }
 }
