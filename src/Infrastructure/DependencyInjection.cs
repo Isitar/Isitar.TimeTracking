@@ -5,6 +5,7 @@ namespace Isitar.TimeTracking.Infrastructure
     using Instant;
     using Microsoft.Extensions.DependencyInjection;
     using StorageProvider;
+    using Identity;
 
     public static class DependencyInjection
     {
@@ -12,6 +13,8 @@ namespace Isitar.TimeTracking.Infrastructure
         {
             services.AddTransient<IInstant, SystemClockInstant>();
             services.AddTransient<IStorageProvider, FileStorageProvider>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.Addiden
             return services;
         }
     }

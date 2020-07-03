@@ -18,6 +18,7 @@ namespace Api
     using Isitar.TimeTracking.Application.Common.Interfaces;
     using Isitar.TimeTracking.Infrastructure;
     using Isitar.TimeTracking.Infrastructure.Identity;
+    using Isitar.TimeTracking.Infrastructure.StorageProvider;
     using Isitar.TimeTracking.Persistence;
     using Microsoft.EntityFrameworkCore;
     using Services;
@@ -34,6 +35,10 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var fsc = new FileStorageConfig();
+            Configuration.Bind(nameof(FileStorageConfig), fsc);
+            services.AddSingleton<FileStorageConfig>(fsc);
+            
             services.AddControllers();
             services.AddInfrastructure();
             services.AddPersistence(Configuration);
