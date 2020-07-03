@@ -20,6 +20,7 @@
     </resheader>
 
     <data name="NotFoundException">Entity "{name}" ({key}) was not found</data>
+    <data name="UnauthorizedException">You're not authorized to perform this action</data>
     <data name="User">User</data>
     <data name="Project">Project</data>
     <data name="TimeTrackingEntry">Time tracking entry</data>

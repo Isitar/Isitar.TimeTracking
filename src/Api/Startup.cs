@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
-namespace Api
+namespace Isitar.TimeTracking.Api
 {
+    using Application;
+    using Application.Common.Interfaces;
+    using Infrastructure;
+    using Infrastructure.Identity;
     using Installers;
-    using Isitar.TimeTracking.Application;
-    using Isitar.TimeTracking.Application.Common.Interfaces;
-    using Isitar.TimeTracking.Infrastructure;
-    using Isitar.TimeTracking.Infrastructure.Identity;
-    using Isitar.TimeTracking.Infrastructure.StorageProvider;
-    using Isitar.TimeTracking.Persistence;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Middlewares;
+    using Persistence;
     using Services;
 
     public class Startup
@@ -35,7 +27,6 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-          
             services.AddControllers();
             services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
@@ -43,8 +34,8 @@ namespace Api
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddSwagger();
-            
-            
+
+            services.AddCors(options => { options.AddPolicy("AllowAll", builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("Token-Expired", "content-disposition"); }); });
             services.AddHttpContextAccessor();
         }
 
@@ -53,19 +44,24 @@ namespace Api
         {
             dbContext.Database.Migrate();
             appIdentityDbContext.Database.Migrate();
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwaggerWithUi();
             }
 
+            app.UseCors();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware(typeof(LanguageMiddleware));
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

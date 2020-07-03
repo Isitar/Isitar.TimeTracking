@@ -9,6 +9,8 @@ namespace Isitar.TimeTracking.Domain.Entities
         public string Acronym { get; set; }
         public string Name { get; set; }
 
+        public string Locale { get; set; }
+        
         public ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 
         #region IAuditableEntity

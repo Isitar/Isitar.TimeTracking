@@ -1,4 +1,4 @@
-namespace Api.Installers
+namespace Isitar.TimeTracking.Api.Installers
 {
     using System;
     using System.Collections.Generic;

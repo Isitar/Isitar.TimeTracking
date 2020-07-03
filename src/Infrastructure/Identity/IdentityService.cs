@@ -6,6 +6,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
     using System.Threading.Tasks;
     using Application.Common.Entities;
     using Application.Common.Enums;
+    using Application.Common.Exceptions;
     using Application.Common.Interfaces;
     using Common.Resources;
     using Microsoft.AspNetCore.Identity;
@@ -14,19 +15,45 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<AppUser> userManager;
+        private readonly ICurrentUserService currentUserService;
 
-        public IdentityService(UserManager<AppUser> userManager)
+        public IdentityService(UserManager<AppUser> userManager, ICurrentUserService currentUserService)
         {
             this.userManager = userManager;
+            this.currentUserService = currentUserService;
+        }
+
+        private async Task<bool> IsCurrentUserAdminAsync()
+        {
+            var currentUserId = currentUserService.UserId;
+            if (!currentUserId.HasValue)
+            {
+                return false;
+            }
+
+            var result = await CanAsync(currentUserId.Value, Permission.Admin);
+            return result.Successful && result.Data;
+        }
+
+        private bool IsCurrentUser(Guid id)
+        {
+            var currentUserId = currentUserService.UserId;
+            return currentUserId.HasValue && currentUserId.Value.Equals(id);
         }
 
         public async Task<Result> CreateUserAsync(Guid userId, string username, string password)
         {
+            // check auth
+            if (!(await IsCurrentUserAdminAsync()))
+            {
+                throw new UnauthorizedException();
+            }
+
             var user = new AppUser
             {
                 UserName = username,
                 Email = username,
-                Id = userId
+                Id = userId,
             };
             var result = await userManager.CreateAsync(user, password);
             return result.ToResult();
@@ -34,6 +61,12 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
 
         public async Task<Result> DeleteUserAsync(Guid userId)
         {
+            // check auth
+            if (!(await IsCurrentUserAdminAsync()))
+            {
+                throw new UnauthorizedException();
+            }
+            
             var user = await userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
 
             if (user != null)
@@ -46,6 +79,12 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
 
         public async Task<Result> DeleteUserAsync(AppUser user)
         {
+            // check auth
+            if (!(await IsCurrentUserAdminAsync()))
+            {
+                throw new UnauthorizedException();
+            }
+            
             var result = await userManager.DeleteAsync(user);
 
             return result.ToResult();
@@ -66,6 +105,12 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
 
         public async Task<Result> SetPasswordAsync(Guid userId, string password)
         {
+            // check auth
+            if (!await IsCurrentUserAdminAsync() || !IsCurrentUser(userId))
+            {
+                throw new UnauthorizedException();
+            }
+            
             var userResult = await FindUserAsync(userId);
             if (!userResult.Successful)
             {
@@ -82,6 +127,11 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
 
         public async Task<Result> SetUsernameAsync(Guid userId, string username)
         {
+            // check auth
+            if (!await IsCurrentUserAdminAsync() ||  !IsCurrentUser(userId))
+            {
+                throw new UnauthorizedException();
+            }
             var userResult = await FindUserAsync(userId);
             if (!userResult.Successful)
             {
@@ -112,6 +162,12 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
 
         public async Task<Result> AssignPermissionAsync(Guid userId, Permission permission)
         {
+            // check auth
+            if (!(await IsCurrentUserAdminAsync()))
+            {
+                throw new UnauthorizedException();
+            }
+            
             var userResult = await FindUserAsync(userId);
             if (!userResult.Successful)
             {
@@ -125,6 +181,12 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
 
         public async Task<Result> RevokePermissionAsync(Guid userId, Permission permission)
         {
+            // check auth
+            if (!(await IsCurrentUserAdminAsync()))
+            {
+                throw new UnauthorizedException();
+            }
+            
             var userResult = await FindUserAsync(userId);
             if (!userResult.Successful)
             {

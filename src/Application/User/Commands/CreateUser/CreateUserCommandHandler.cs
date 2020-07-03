@@ -27,6 +27,7 @@ namespace Isitar.TimeTracking.Application.User.Commands.CreateUserCommand
                     Id = request.Id,
                     Acronym = request.Acronym,
                     Name = request.Name,
+                    Locale = request.Locale,
                 }, cancellationToken);
                 var createUserResult = await identityService.CreateUserAsync(request.Id, request.Username, request.Password);
                 if (!createUserResult.Successful)

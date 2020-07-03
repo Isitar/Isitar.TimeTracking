@@ -51,6 +51,12 @@ namespace Common.Resources {
             }
         }
         
+        public static string UnauthorizedException {
+            get {
+                return ResourceManager.GetString("UnauthorizedException", resourceCulture);
+            }
+        }
+        
         public static string User {
             get {
                 return ResourceManager.GetString("User", resourceCulture);
