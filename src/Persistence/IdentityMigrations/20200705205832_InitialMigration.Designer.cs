@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Isitar.TimeTracking.Persistence.IdentityMigrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20200705111824_InitialMigration")]
+    [Migration("20200705205832_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,15 +47,6 @@ namespace Isitar.TimeTracking.Persistence.IdentityMigrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("79690aed-86b2-4480-a726-9fe5f0d8b35b"),
-                            ConcurrencyStamp = "79690AED-86B2-4480-A726-9FE5F0D8B35B",
-                            Name = "Role.Admin",
-                            NormalizedName = "ROLE.ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Isitar.TimeTracking.Infrastructure.Identity.AppUser", b =>

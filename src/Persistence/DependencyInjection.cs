@@ -13,17 +13,22 @@ namespace Isitar.TimeTracking.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<TimeTrackingDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("TimeTrackingDbConnection"),
-                    o => o.UseNodaTime()
-                )
+                options
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql(configuration.GetConnectionString("TimeTrackingDbConnection"),
+                        o => o.UseNodaTime()
+                    )
             );
 
             services.AddDbContext<AppIdentityDbContext>(
-                options => options.UseNpgsql(configuration.GetConnectionString("AppIdentityDbConnection"),
-                    o => o
-                        .MigrationsAssembly(Assembly.GetAssembly(typeof(DependencyInjection))!.FullName)
-                        .UseNodaTime()
-                )
+                options =>
+                    options
+                        .UseLazyLoadingProxies()
+                        .UseNpgsql(configuration.GetConnectionString("AppIdentityDbConnection"),
+                            o => o
+                                .MigrationsAssembly(Assembly.GetAssembly(typeof(DependencyInjection))!.FullName)
+                                .UseNodaTime()
+                        )
             );
 
             services.AddScoped<ITimeTrackingDbContext, TimeTrackingDbContext>();

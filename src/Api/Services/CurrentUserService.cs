@@ -11,7 +11,6 @@ namespace Isitar.TimeTracking.Api.Services
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
             var userIdString = httpContextAccessor.HttpContext?.User?.FindFirstValue(new IdentityOptions().ClaimsIdentity.UserIdClaimType);
-            var asdf = httpContextAccessor.HttpContext?.User?.FindFirstValue(new IdentityOptions().ClaimsIdentity.UserNameClaimType);
             if (string.IsNullOrWhiteSpace(userIdString))
             {
                 UserId = null;

@@ -4,6 +4,7 @@ namespace Isitar.TimeTracking.Infrastructure
     using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
+    using Application.Common.Enums;
     using Application.Common.Interfaces;
     using Common;
     using Identity;
@@ -21,6 +22,7 @@ namespace Isitar.TimeTracking.Infrastructure
         {
             services.AddTransient<IInstant, SystemClockInstant>();
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IIdentityInitializer, IdentityInitializer>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddIdentity<AppUser, AppRole>(options =>
                 {
@@ -78,7 +80,7 @@ namespace Isitar.TimeTracking.Infrastructure
             // add policy for permissions
             services.AddAuthorization(options =>
             {
-                foreach (var prop in typeof(ClaimPermission).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
+                foreach (var prop in typeof(Permissions).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy))
                 {
                     var propertyValue = prop.GetValue(null)?.ToString();
                     options.AddPolicy(propertyValue, policy => policy.RequireClaim(CustomClaimTypes.PermissionClaimType, propertyValue));

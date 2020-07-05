@@ -15,11 +15,13 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.IdentityService
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<AppUser> userManager;
+        private readonly RoleManager<AppRole> roleManager;
         private readonly ICurrentUserService currentUserService;
 
-        public IdentityService(UserManager<AppUser> userManager, ICurrentUserService currentUserService)
+        public IdentityService(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, ICurrentUserService currentUserService)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
             this.currentUserService = currentUserService;
         }
 
@@ -31,7 +33,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.IdentityService
                 return true;
             }
 
-            var result = await CanAsync(currentUserId.Value, Permission.Admin);
+            var result = await CanAsync(currentUserId.Value, Permissions.Admin);
             return result.Successful && result.Data;
         }
 
@@ -161,7 +163,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.IdentityService
             return res.ToResult();
         }
 
-        public async Task<Result<bool>> CanAsync(Guid userId, Permission permission)
+        public async Task<Result<bool>> CanAsync(Guid userId, string permission)
         {
             var userResult = await FindUserAsync(userId);
             if (!userResult.Successful)
@@ -170,7 +172,12 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.IdentityService
             }
 
             var user = userResult.Data;
-            var claims = await userManager.GetClaimsAsync(user);
+            var claims = (await userManager.GetClaimsAsync(user)).ToList();
+            foreach (var roleName in await userManager.GetRolesAsync(user))
+            {
+                var role = await roleManager.FindByNameAsync(roleName);
+                claims.AddRange(await roleManager.GetClaimsAsync(role));
+            }
 
             return Result<bool>.Success(claims.Any(c => c.Type.Equals(CustomClaimTypes.PermissionClaimType) && c.Value.Equals(permission.ToString())));
         }

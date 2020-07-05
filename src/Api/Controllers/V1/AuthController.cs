@@ -6,7 +6,6 @@
     using Application.Common.Interfaces;
     using Attributes;
     using Common.Resources;
-    using Infrastructure.Identity;
     using Infrastructure.Identity.Services.TokenService;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -107,7 +106,6 @@
             return response.Successful ? (IActionResult) Ok() : BadRequest();
         }
 
-        [Authorize(Policy = ClaimPermission.Admin)]
         [HttpPost(ApiRoutes.Auth.AddRole, Name = nameof(AuthController) + "/" + nameof(AddRoleAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesBadRequestResponse]
@@ -122,7 +120,6 @@
             return Ok();
         }
 
-        [Authorize(Policy = ClaimPermission.Admin)]
         [HttpDelete(ApiRoutes.Auth.RemoveRole, Name = nameof(AuthController) + "/" + nameof(RemoveRoleAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesBadRequestResponse]

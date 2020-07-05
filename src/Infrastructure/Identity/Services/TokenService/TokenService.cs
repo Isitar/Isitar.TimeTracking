@@ -8,6 +8,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.TokenService
     using System.Text;
     using System.Threading.Tasks;
     using Application.Common.Entities;
+    using Common;
     using Common.Resources;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,14 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.TokenService
         private readonly TokenValidationParameters tokenValidationParameters;
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
+        private readonly IInstant instant;
 
         public TokenService(AppIdentityDbContext identityDbContext,
             JwtSettings jwtSettings,
             TokenValidationParameters tokenValidationParameters,
             UserManager<AppUser> userManager,
-            RoleManager<AppRole> roleManager
+            RoleManager<AppRole> roleManager,
+            IInstant instant
         )
         {
             this.identityDbContext = identityDbContext;
@@ -34,6 +37,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.TokenService
             this.tokenValidationParameters = tokenValidationParameters;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.instant = instant;
         }
 
         /// <summary>
@@ -59,7 +63,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.TokenService
             var userId = Guid.Parse(validatedToken.Claims.Single(x => x.Type == identityOptions.ClaimsIdentity.UserIdClaimType).Value);
 
             if (storedRefreshToken == null
-                || SystemClock.Instance.GetCurrentInstant() > storedRefreshToken.Expires
+                || instant.Now > storedRefreshToken.Expires
                 || storedRefreshToken.Invalidated
                 || storedRefreshToken.Used
                 || storedRefreshToken.JwtTokenId != jti
@@ -139,7 +143,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.TokenService
                 JwtTokenId = token.Id,
                 Token = Guid.NewGuid().ToString(),
                 UserId = user.Id,
-                Expires = SystemClock.Instance.GetCurrentInstant().Plus(Duration.FromDays(90)),
+                Expires = instant.Now.Plus(Duration.FromDays(90)),
             };
 
             await identityDbContext.RefreshTokens.AddAsync(refreshToken);
@@ -159,7 +163,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.TokenService
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                 new Claim(identityOptions.ClaimsIdentity.UserIdClaimType, user.Id.ToString()),

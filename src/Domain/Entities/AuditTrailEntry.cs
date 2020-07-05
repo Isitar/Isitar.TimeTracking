@@ -10,6 +10,6 @@ namespace Isitar.TimeTracking.Domain.Entities
         public string OldValue { get; set; }
         public string NewValue { get; set; }
         public Guid? CreatedById { get; set; }
-        public User CreatedBy { get; set; }
+        public virtual User CreatedBy { get; set; }
     }
 }

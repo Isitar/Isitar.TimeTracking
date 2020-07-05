@@ -22,7 +22,7 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserLocale
         }
         public async Task<UserLocaleVm> Handle(UserLocaleQuery request, CancellationToken cancellationToken)
         {
-            var user = await dbContext.Users.FindAsync(request.Id, cancellationToken);
+            var user = await dbContext.Users.FindAsync(request.Id);
             if (null == user)
             {
                 throw new NotFoundException(Translation.User, request.Id);

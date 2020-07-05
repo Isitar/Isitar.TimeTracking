@@ -16,7 +16,7 @@ namespace Isitar.TimeTracking.Application.Common.Interfaces
         public Task<Result> SetUsernameAsync(Guid userId, string username);
         public Task<Result> SetEmailAsync(Guid userId, string email);
 
-        public Task<Result<bool>> CanAsync(Guid userId, Permission permission);
+        public Task<Result<bool>> CanAsync(Guid userId, string permission);
         public Task<Result> AssignRoleAsync(Guid userId, string roleName);
         public Task<Result> RevokeRoleAsync(Guid userId, string roleName);
         public Task<Result<IEnumerable<string>>> RolesAsync(Guid userId);

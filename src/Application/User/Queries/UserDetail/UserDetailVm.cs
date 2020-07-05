@@ -2,6 +2,7 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using AutoMapper;
     using Common.Mappings;
     using Domain.Entities;
@@ -19,13 +20,14 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
         public string UpdatedByName { get; set; }
         public Instant? UpdatedAt { get; set; }
 
-        public ICollection<AuditTrailEntry> AuditTrailEntries { get; } = new HashSet<AuditTrailEntry>();
+        public IEnumerable<AuditTrailEntry> AuditTrailEntries { get; } = new HashSet<AuditTrailEntry>();
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<User, UserDetailVm>()
                 .ForMember(vm => vm.CreatedByName, opt => opt.MapFrom(u => u.CreatedBy.Name))
-                .ForMember(vm => vm.UpdatedByName, opt => opt.MapFrom(u => u.UpdatedBy.Name));
+                .ForMember(vm => vm.UpdatedByName, opt => opt.MapFrom(u => u.UpdatedBy.Name))
+                .ForMember(vm => vm.AuditTrailEntries, opt => opt.MapFrom(u => u.AuditTrailEntries.ToList()));
         }
     }
 }

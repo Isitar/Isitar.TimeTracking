@@ -45,15 +45,6 @@ namespace Isitar.TimeTracking.Persistence.IdentityMigrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("79690aed-86b2-4480-a726-9fe5f0d8b35b"),
-                            ConcurrencyStamp = "79690AED-86B2-4480-A726-9FE5F0D8B35B",
-                            Name = "Role.Admin",
-                            NormalizedName = "ROLE.ADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Isitar.TimeTracking.Infrastructure.Identity.AppUser", b =>

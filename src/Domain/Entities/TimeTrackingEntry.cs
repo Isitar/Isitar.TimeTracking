@@ -5,13 +5,13 @@ namespace Isitar.TimeTracking.Domain.Entities
 
     public class TimeTrackingEntry : IEntity
     {
-        public User User { get; set; }
+        public virtual User User { get; set; }
         public Guid UserId { get; set; }
 
         public Instant From { get; set; }
         public Instant? To { get; set; }
 
-        public Project Project { get; set; }
+        public virtual Project Project { get; set; }
         public Guid ProjectId { get; set; }
 
         #region IEntity

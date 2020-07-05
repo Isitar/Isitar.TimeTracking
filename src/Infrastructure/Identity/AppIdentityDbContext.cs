@@ -2,6 +2,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
 {
     using System;
     using Application.Common.Enums;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -16,17 +17,17 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(typeof(AppIdentityDbContext).Assembly);
-            builder.Entity<AppRole>()
-                .HasData(new[]
-                {
-                    new AppRole
-                    {
-                        Id = Guid.Parse("79690AED-86B2-4480-A726-9FE5F0D8B35B"),
-                        Name = RoleNames.Admin,
-                        ConcurrencyStamp = "79690AED-86B2-4480-A726-9FE5F0D8B35B",
-                        NormalizedName = RoleNames.Admin.ToUpper(),
-                    }
-                });
+            // builder.Entity<AppRole>()
+            //     .HasData(new[]
+            //     {
+            //         new AppRole
+            //         {
+            //             Id = Guid.Parse("79690AED-86B2-4480-A726-9FE5F0D8B35B"),
+            //             Name = RoleNames.Admin,
+            //             ConcurrencyStamp = "79690AED-86B2-4480-A726-9FE5F0D8B35B",
+            //             NormalizedName = RoleNames.Admin.ToUpper(),
+            //         }
+            //     });
         }
         
     }

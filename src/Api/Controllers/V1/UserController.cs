@@ -40,7 +40,7 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
                 Locale = "de-CH",
                 Password = createUserRequest.Password,
             });
-            return CreatedAtRoute($"{nameof(UserController)}/{nameof(SingleAsync)}",id,null);
+            return CreatedAtRoute($"{nameof(UserController)}/{nameof(SingleAsync)}",new {id},null);
         }
     }
 }

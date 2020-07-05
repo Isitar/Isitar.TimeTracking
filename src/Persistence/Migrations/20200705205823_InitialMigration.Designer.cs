@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Isitar.TimeTracking.Persistence.Migrations
 {
     [DbContext(typeof(TimeTrackingDbContext))]
-    [Migration("20200705121616_InitialMigration")]
+    [Migration("20200705205823_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

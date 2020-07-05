@@ -1,8 +1,7 @@
 namespace Isitar.TimeTracking.Application.Common.Enums
 {
-    public enum Permission
+    public static class Permissions
     {
-        Admin = 0,
-        User = 1,
+        public const string Admin = "Permission.Admin";
     }
 }

@@ -13,6 +13,6 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
         public bool Invalidated { get; set; }
 
         public Guid UserId { get; set; }
-        public AppUser User { get; set; }
+        public virtual AppUser User { get; set; }
     }
 }

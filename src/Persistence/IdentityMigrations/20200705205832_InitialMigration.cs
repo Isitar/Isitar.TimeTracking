@@ -178,11 +178,6 @@ namespace Isitar.TimeTracking.Persistence.IdentityMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { new Guid("79690aed-86b2-4480-a726-9fe5f0d8b35b"), "79690AED-86B2-4480-A726-9FE5F0D8B35B", "Role.Admin", "ROLE.ADMIN" });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

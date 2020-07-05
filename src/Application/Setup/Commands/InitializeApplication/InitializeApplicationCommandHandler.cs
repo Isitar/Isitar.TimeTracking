@@ -14,12 +14,17 @@ namespace Isitar.TimeTracking.Application.Setup.Commands.InitializeApplication
         private readonly IMediator mediator;
         private readonly ITimeTrackingDbContext dbContext;
         private readonly IIdentityService identityService;
+        private readonly IIdentityInitializer identityInitializer;
 
-        public InitializeApplicationCommandHandler(IMediator mediator, ITimeTrackingDbContext dbContext, IIdentityService identityService)
+        public InitializeApplicationCommandHandler(IMediator mediator, 
+            ITimeTrackingDbContext dbContext, 
+            IIdentityService identityService,
+            IIdentityInitializer identityInitializer)
         {
             this.mediator = mediator;
             this.dbContext = dbContext;
             this.identityService = identityService;
+            this.identityInitializer = identityInitializer;
         }
         
         public async Task<Unit> Handle(InitializeApplicationCommand request, CancellationToken cancellationToken)
@@ -29,6 +34,8 @@ namespace Isitar.TimeTracking.Application.Setup.Commands.InitializeApplication
                 return Unit.Value;
             }
 
+            await identityInitializer.Initialize();
+            
             var id = Guid.NewGuid();
             await mediator.Send(new CreateUserCommand
             {
