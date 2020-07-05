@@ -19,8 +19,18 @@ namespace Isitar.TimeTracking.Api.Routes.v1
             public const string ChangeUsername = AuthBase + "/{id}/username";
 
             public const string AddRole = AuthBase + "/{id}/role";
-            public const string RemoveRole = AuthBase + "/{id}/role";
+            public const string RemoveRole = AuthBase + "/{id}/role/{roleName}";
             public const string UserRoles = AuthBase + "/{id}/role";
+        }
+        
+        public static class User
+        {
+            private const string UserBase = Base + "/user";
+            public const string All = UserBase;
+            public const string Create = UserBase;
+            public const string Update = UserBase + "/{id}";
+            public const string Delete = UserBase + "/{id}";
+            public const string Single = UserBase + "/{id}";
         }
     }
 }

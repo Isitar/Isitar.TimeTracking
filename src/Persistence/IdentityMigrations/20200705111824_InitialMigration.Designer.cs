@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
+namespace Isitar.TimeTracking.Persistence.IdentityMigrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20200703202739_InitialMigration")]
+    [Migration("20200705111824_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +47,15 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("79690aed-86b2-4480-a726-9fe5f0d8b35b"),
+                            ConcurrencyStamp = "79690AED-86B2-4480-A726-9FE5F0D8B35B",
+                            Name = "Role.Admin",
+                            NormalizedName = "ROLE.ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Isitar.TimeTracking.Infrastructure.Identity.AppUser", b =>
@@ -111,6 +121,40 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Isitar.TimeTracking.Infrastructure.Identity.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<Instant>("Expires")
+                        .HasColumnType("timestamp");
+
+                    b.Property<bool>("Invalidated")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("JwtTokenId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Used")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -212,6 +256,15 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("Isitar.TimeTracking.Infrastructure.Identity.RefreshToken", b =>
+                {
+                    b.HasOne("Isitar.TimeTracking.Infrastructure.Identity.AppUser", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

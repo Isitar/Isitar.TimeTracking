@@ -8,6 +8,7 @@ namespace Isitar.TimeTracking.Domain.Entities
     {
         public string Acronym { get; set; }
         public string Name { get; set; }
+        public string Email { get; set; }
 
         public string Locale { get; set; }
         

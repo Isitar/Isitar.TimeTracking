@@ -15,10 +15,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="IdentityMigrations" />
         <Folder Include="Migrations" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Application\Application.csproj" />
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 </Project>

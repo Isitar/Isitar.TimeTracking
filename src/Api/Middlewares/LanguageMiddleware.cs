@@ -1,6 +1,5 @@
 namespace Isitar.TimeTracking.Api.Middlewares
 {
-    using System;
     using System.Globalization;
     using System.Threading.Tasks;
     using Application.Common.Interfaces;
@@ -10,26 +9,29 @@ namespace Isitar.TimeTracking.Api.Middlewares
 
     public class LanguageMiddleware
     {
-        public async Task Invoke(HttpContext httpContext, ICurrentUserService currentUserService, IMediator mediator, Func<Task> next)
+        private readonly RequestDelegate next;
+
+        public LanguageMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext httpContext, ICurrentUserService currentUserService, IMediator mediator)
         {
             CultureInfo.CurrentCulture = new CultureInfo("de-ch");
-            if (!currentUserService.IsAuthenticated)
+            if (currentUserService.IsAuthenticated)
             {
-                return;
+                var coreUserId = currentUserService.UserId;
+                if (coreUserId.HasValue)
+                {
+                    var locale = await mediator.Send(new UserLocaleQuery {Id = coreUserId.Value});
+                    var cultureInfo = new CultureInfo(locale.Locale);
+                    CultureInfo.CurrentCulture = cultureInfo;
+                    CultureInfo.CurrentUICulture = cultureInfo;
+                }
             }
 
-            var coreUserId = currentUserService.UserId;
-            if (!coreUserId.HasValue)
-            {
-                return;
-            }
-
-            var locale = await mediator.Send(new UserLocaleQuery {Id = coreUserId.Value});
-            var cultureInfo = new CultureInfo(locale.Locale);
-            CultureInfo.CurrentCulture = cultureInfo;
-            CultureInfo.CurrentUICulture = cultureInfo;
-            
-            await next.Invoke();
+            await next(httpContext);
         }
     }
 }

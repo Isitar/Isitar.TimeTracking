@@ -80,5 +80,17 @@ namespace Common.Resources {
                 return ResourceManager.GetString("UserNotCreated", resourceCulture);
             }
         }
+        
+        public static string InvalidToken {
+            get {
+                return ResourceManager.GetString("InvalidToken", resourceCulture);
+            }
+        }
+        
+        public static string UsernamePasswordWrong {
+            get {
+                return ResourceManager.GetString("UsernamePasswordWrong", resourceCulture);
+            }
+        }
     }
 }

@@ -1,27 +1,30 @@
-﻿﻿namespace Isitar.TimeTracking.Api.Controllers.v1
+﻿namespace Isitar.TimeTracking.Api.Controllers.V1
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Application.Common.Interfaces;
     using Attributes;
+    using Common.Resources;
     using Infrastructure.Identity;
+    using Infrastructure.Identity.Services.TokenService;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Requests.v1;
-    using Requests.v1.auth;
+    using Requests.V1.Auth;
     using Routes.v1;
 
     public class AuthController : ApiController
     {
-        private readonly IAuthorizationService authorizationService;
         private readonly IIdentityService identityService;
+        private readonly ITokenService tokenService;
+        private readonly ICurrentUserService currentUserService;
 
-        public AuthController(IIdentityService identityService,  IAuthorizationService authorizationService)
+        public AuthController(IIdentityService identityService, ITokenService tokenService, ICurrentUserService currentUserService)
         {
             this.identityService = identityService;
-            this.authorizationService = authorizationService;
+            this.tokenService = tokenService;
+            this.currentUserService = currentUserService;
         }
 
         [HttpPost(ApiRoutes.Auth.ChangePassword, Name = nameof(AuthController) + "/" + nameof(ChangePasswordAsync))]
@@ -30,7 +33,6 @@
         [ProducesBadRequestResponse]
         public async Task<IActionResult> ChangePasswordAsync(Guid id, [FromBody] ChangePasswordRequest changePasswordRequest)
         {
-
             var res = await identityService.SetPasswordAsync(id, changePasswordRequest.NewPassword);
             if (!res.Successful)
             {
@@ -46,7 +48,6 @@
         [ProducesBadRequestResponse]
         public async Task<IActionResult> ChangeUsernameAsync(Guid id, [FromBody] ChangeUsernameRequest changeUsernameRequest)
         {
-
             var res = await identityService.SetUsernameAsync(id, changeUsernameRequest.NewUsername);
             if (!res.Successful)
             {
@@ -62,17 +63,13 @@
         [ProducesBadRequestResponse]
         public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenRequest refreshTokenRequest)
         {
-            var resp = await identityService.RefreshAsync(refreshTokenRequest.RefreshToken, refreshTokenRequest.JwtToken);
-            if (!resp.Success)
+            var resp = await tokenService.RefreshAsync(refreshTokenRequest.RefreshToken, refreshTokenRequest.JwtToken);
+            if (!resp.Successful)
             {
-                return BadRequest(resp.ErrorMessages);
+                return BadRequest(resp.Errors);
             }
 
-            return Ok(new AuthSuccessResponse
-            {
-                Token = resp.Data.Token,
-                RefreshToken = resp.Data.RefreshToken
-            });
+            return Ok(resp.Data);
         }
 
         [AllowAnonymous]
@@ -81,18 +78,13 @@
         [ProducesBadRequestResponse]
         public async Task<IActionResult> TokenAsync([FromBody] LoginRequest loginRequest)
         {
-            var resp = await identityService.LoginAsync(loginRequest.Username, loginRequest.Password);
-            if (!resp.Success)
+            var resp = await tokenService.LoginAsync(loginRequest.Username, loginRequest.Password);
+            if (!resp.Successful)
             {
-                return BadRequest(resp.ErrorMessages
-                );
+                return BadRequest(resp.Errors);
             }
 
-            return Ok(new AuthSuccessResponse
-            {
-                Token = resp.Data.Token,
-                RefreshToken = resp.Data.RefreshToken
-            });
+            return Ok(resp.Data);
         }
 
         [HttpPost(ApiRoutes.Auth.Logout, Name = nameof(AuthController) + "/" + nameof(LogoutAsync))]
@@ -101,42 +93,45 @@
         [ProducesBadRequestResponse]
         public async Task<IActionResult> LogoutAsync(Guid? userId)
         {
-            var loggedInUserId = CoreUserId();
-            var isAdmin = (await authorizationService.AuthorizeAsync(User, ClaimPermission.Admin)).Succeeded;
-            if (!isAdmin && userId.HasValue && !userId.Value.Equals(loggedInUserId))
-            {
-                return Unauthorized(new[] {Resources.NotAllowed});
-            }
-
             if (!userId.HasValue)
             {
-                userId = loggedInUserId;
+                userId = currentUserService.UserId;
             }
 
             if (null == userId)
             {
-                return BadRequest(Resources.UserDoesNotExist);
+                return BadRequest(Translation.NotFoundException.Replace("{name}", Translation.User));
             }
 
-            var response = await identityService.LogoutAsync(userId.Value);
-            return response.Success ? (IActionResult) Ok() : BadRequest();
+            var response = await tokenService.LogoutAsync(userId.Value);
+            return response.Successful ? (IActionResult) Ok() : BadRequest();
         }
 
         [Authorize(Policy = ClaimPermission.Admin)]
-        [HttpPost(ApiRoutes.Auth.ToggleRole, Name = nameof(AuthController) + "/" + nameof(ToggleRoleAsync))]
+        [HttpPost(ApiRoutes.Auth.AddRole, Name = nameof(AuthController) + "/" + nameof(AddRoleAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesBadRequestResponse]
-        public async Task<IActionResult> ToggleRoleAsync(ToggleRoleRequest toggleRoleRequest)
+        public async Task<IActionResult> AddRoleAsync(Guid id, RoleRequest roleRequest)
         {
-            if (toggleRoleRequest.UserId.Equals(CoreUserId()))
+            var response = await identityService.AssignRoleAsync(id, roleRequest.RoleName);
+            if (!response.Successful)
             {
-                return BadRequest(new[] {Resources.CannotSetOwnRoles});
+                return BadRequest(response.Errors);
             }
 
-            var response = await identityService.ToggleRoleAsync(toggleRoleRequest.UserId, toggleRoleRequest.RoleName);
-            if (!response.Success)
+            return Ok();
+        }
+
+        [Authorize(Policy = ClaimPermission.Admin)]
+        [HttpDelete(ApiRoutes.Auth.RemoveRole, Name = nameof(AuthController) + "/" + nameof(RemoveRoleAsync))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesBadRequestResponse]
+        public async Task<IActionResult> RemoveRoleAsync(Guid id, string roleName)
+        {
+            var response = await identityService.RevokeRoleAsync(id, roleName);
+            if (!response.Successful)
             {
-                return BadRequest(response.ErrorMessages);
+                return BadRequest(response.Errors);
             }
 
             return Ok();
@@ -152,34 +147,13 @@
         [ProducesBadRequestResponse]
         public async Task<ActionResult<IEnumerable<string>>> UserRolesAsync(Guid id)
         {
-            var result = await identityService.UserRolesAsync(id);
-            if (!result.Success)
+            var result = await identityService.RolesAsync(id);
+            if (!result.Successful)
             {
-                return BadRequest(result.ErrorMessages);
+                return BadRequest(result.Errors);
             }
 
             return Ok(result.Data);
-        }
-
-        [AllowAnonymous]
-        [HttpPost(ApiRoutes.Auth.ResetPassword, Name = nameof(AuthController) + "/" + nameof(ResetUserPasswordAsync))]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesBadRequestResponse]
-        public async Task<IActionResult> ResetUserPasswordAsync(ResetPasswordRequest passwordResetRequest)
-        {
-            var userIdResponse = await identityService.FindPersonIdByEmailAsync(passwordResetRequest.Email);
-            if (!userIdResponse.Success)
-            {
-                return BadRequest();
-            }
-
-            var response = await identityService.ResetPasswordAndSendMailAsync(userIdResponse.Data, mailService, "https://my.bpw.ch", passwordResetRequest.MailTemplate);
-            if (!response.Success)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
         }
     }
 }

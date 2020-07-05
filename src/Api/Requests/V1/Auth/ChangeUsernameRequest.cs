@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Api.Requests.v1.auth
+namespace Isitar.TimeTracking.Api.Requests.V1.Auth
 {
     public class ChangeUsernameRequest
     {

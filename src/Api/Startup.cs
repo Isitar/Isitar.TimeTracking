@@ -2,9 +2,11 @@ namespace Isitar.TimeTracking.Api
 {
     using Application;
     using Application.Common.Interfaces;
+    using Application.Setup.Commands.InitializeApplication;
     using Infrastructure;
     using Infrastructure.Identity;
     using Installers;
+    using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,8 @@ namespace Isitar.TimeTracking.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Middlewares;
+    using NodaTime;
+    using NodaTime.Serialization.SystemTextJson;
     using Persistence;
     using Services;
 
@@ -27,7 +31,11 @@ namespace Isitar.TimeTracking.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
+                });;
             services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
             services.AddApplication();
@@ -40,10 +48,11 @@ namespace Isitar.TimeTracking.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ITimeTrackingDbContext dbContext, AppIdentityDbContext appIdentityDbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ITimeTrackingDbContext dbContext, AppIdentityDbContext appIdentityDbContext, IMediator mediator)
         {
             dbContext.Database.Migrate();
             appIdentityDbContext.Database.Migrate();
+            var res = mediator.Send(new InitializeApplicationCommand()).Result;
 
             if (env.IsDevelopment())
             {
@@ -63,6 +72,7 @@ namespace Isitar.TimeTracking.Api
             app.UseMiddleware(typeof(LanguageMiddleware));
             
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
         }
     }
 }

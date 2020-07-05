@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
+namespace Isitar.TimeTracking.Persistence.IdentityMigrations
 {
     public partial class InitialMigration : Migration
     {
@@ -153,6 +154,35 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Token = table.Column<string>(nullable: false),
+                    JwtTokenId = table.Column<string>(nullable: false),
+                    Expires = table.Column<Instant>(nullable: false),
+                    Used = table.Column<bool>(nullable: false),
+                    Invalidated = table.Column<bool>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("79690aed-86b2-4480-a726-9fe5f0d8b35b"), "79690AED-86B2-4480-A726-9FE5F0D8B35B", "Role.Admin", "ROLE.ADMIN" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -189,6 +219,11 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -207,6 +242,9 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

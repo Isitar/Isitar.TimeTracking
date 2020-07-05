@@ -11,11 +11,12 @@
     <ItemGroup>
         <ProjectReference Include="..\Application\Application.csproj" />
         <ProjectReference Include="..\Common\Common.csproj" />
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-      <ProjectReference Include="..\Persistence\Persistence.csproj" />
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="NodaTime.Serialization.SystemTextJson" Version="1.0.0" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     </ItemGroup>
 

@@ -22,7 +22,7 @@ namespace Isitar.TimeTracking.Application.Common.Entities
 
         public static Result Failure(IEnumerable<string> errors)
         {
-            return new Result(true, errors);
+            return new Result(false, errors);
         }
 
         public string ErrorsCompact()
@@ -46,7 +46,7 @@ namespace Isitar.TimeTracking.Application.Common.Entities
             return new Result<T>(true, new string[0], data);
         }
 
-        public static Result<T> Failure(IEnumerable<string> errors)
+        public new static Result<T> Failure(IEnumerable<string> errors)
         {
             return new Result<T>(true, errors);
         }

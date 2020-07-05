@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Isitar.TimeTracking.Persistence.Migrations
 {
     [DbContext(typeof(TimeTrackingDbContext))]
-    [Migration("20200703203318_InitialMigration")]
+    [Migration("20200705121616_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace Isitar.TimeTracking.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CreatedById")
+                    b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
                     b.Property<string>("NewValue")
@@ -137,6 +137,12 @@ namespace Isitar.TimeTracking.Persistence.Migrations
                     b.Property<Guid?>("CreatedById")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Locale")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -160,8 +166,7 @@ namespace Isitar.TimeTracking.Persistence.Migrations
                     b.HasOne("Isitar.TimeTracking.Domain.Entities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Isitar.TimeTracking.Domain.Entities.Project", null)
                         .WithMany("AuditTrailEntries")

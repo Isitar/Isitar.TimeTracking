@@ -6,26 +6,22 @@ namespace Isitar.TimeTracking.Infrastructure
     using System.Threading.Tasks;
     using Application.Common.Interfaces;
     using Common;
-    using Instant;
-    using Microsoft.Extensions.DependencyInjection;
-    using StorageProvider;
     using Identity;
+    using Identity.Services.IdentityService;
+    using Identity.Services.TokenService;
+    using Instant;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
 
     public static class DependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var fsc = new FileStorageConfig();
-            configuration.Bind(nameof(FileStorageConfig), fsc);
-            services.AddSingleton(fsc);
-
             services.AddTransient<IInstant, SystemClockInstant>();
-            services.AddTransient<IStorageProvider, FileStorageProvider>();
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<ITokenService, TokenService>();
             services.AddIdentity<AppUser, AppRole>(options =>
                 {
                     options.User.RequireUniqueEmail = true;
@@ -39,8 +35,6 @@ namespace Isitar.TimeTracking.Infrastructure
                 })
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
 
-            services.AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("AppIdentityDbConnection")));
-            
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(JwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
@@ -55,6 +49,8 @@ namespace Isitar.TimeTracking.Infrastructure
                 RequireExpirationTime = true,
                 ClockSkew = TimeSpan.Zero,
             };
+            services.AddSingleton(tokenValidationParameters);
+            
             services.AddAuthentication(config =>
                 {
                     config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -78,7 +74,7 @@ namespace Isitar.TimeTracking.Infrastructure
                         },
                     };
                 });
-            
+
             // add policy for permissions
             services.AddAuthorization(options =>
             {

@@ -25,4 +25,6 @@
     <data name="Project">Project</data>
     <data name="TimeTrackingEntry">Time tracking entry</data>
     <data name="UserNotCreated">User not created</data>
+    <data name="InvalidToken">Invalid token</data>
+    <data name="UsernamePasswordWrong">Invalid Username / Password</data>
 </root>

@@ -4,6 +4,7 @@ namespace Isitar.TimeTracking.Application.User.Commands.CreateUserCommand
     using System.Threading;
     using System.Threading.Tasks;
     using Common.Interfaces;
+    using CreateUser;
     using Domain.Entities;
     using MediatR;
 
@@ -27,9 +28,10 @@ namespace Isitar.TimeTracking.Application.User.Commands.CreateUserCommand
                     Id = request.Id,
                     Acronym = request.Acronym,
                     Name = request.Name,
+                    Email = request.Email,
                     Locale = request.Locale,
                 }, cancellationToken);
-                var createUserResult = await identityService.CreateUserAsync(request.Id, request.Username, request.Password);
+                var createUserResult = await identityService.CreateUserAsync(request.Id, request.Acronym, request.Email, request.Password);
                 if (!createUserResult.Successful)
                 {
                     throw new Exception(createUserResult.ErrorsCompact());
@@ -37,7 +39,7 @@ namespace Isitar.TimeTracking.Application.User.Commands.CreateUserCommand
 
                 await dbContext.SaveChangesAsync(cancellationToken);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 try
                 {
@@ -48,6 +50,15 @@ namespace Isitar.TimeTracking.Application.User.Commands.CreateUserCommand
                     }
 
                     await dbContext.SaveChangesAsync(cancellationToken);
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                try
+                {
+                    await identityService.DeleteUserAsync(request.Id);
                 }
                 catch
                 {

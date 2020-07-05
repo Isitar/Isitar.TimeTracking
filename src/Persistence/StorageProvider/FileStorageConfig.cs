@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Infrastructure.StorageProvider
+namespace Isitar.TimeTracking.Persistence.StorageProvider
 {
     public class FileStorageConfig
     {

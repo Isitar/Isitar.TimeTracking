@@ -1,16 +1,17 @@
 namespace Isitar.TimeTracking.Api.Services
 {
     using System;
-    using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using Application.Common.Interfaces;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
 
     public class CurrentUserService : ICurrentUserService
     {
         public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            var userIdString = httpContextAccessor.HttpContext?.User?.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var userIdString = httpContextAccessor.HttpContext?.User?.FindFirstValue(new IdentityOptions().ClaimsIdentity.UserIdClaimType);
+            var asdf = httpContextAccessor.HttpContext?.User?.FindFirstValue(new IdentityOptions().ClaimsIdentity.UserNameClaimType);
             if (string.IsNullOrWhiteSpace(userIdString))
             {
                 UserId = null;
@@ -19,6 +20,7 @@ namespace Isitar.TimeTracking.Api.Services
             {
                 UserId = Guid.Parse(userIdString);
             }
+
             IsAuthenticated = UserId != null;
         }
 

@@ -1,9 +1,12 @@
 namespace Isitar.TimeTracking.Persistence
 {
+    using System.Reflection;
     using Application.Common.Interfaces;
+    using Infrastructure.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using StorageProvider;
 
     public static class DependencyInjection
     {
@@ -15,7 +18,21 @@ namespace Isitar.TimeTracking.Persistence
                 )
             );
 
+            services.AddDbContext<AppIdentityDbContext>(
+                options => options.UseNpgsql(configuration.GetConnectionString("AppIdentityDbConnection"),
+                    o => o
+                        .MigrationsAssembly(Assembly.GetAssembly(typeof(DependencyInjection))!.FullName)
+                        .UseNodaTime()
+                )
+            );
+
             services.AddScoped<ITimeTrackingDbContext, TimeTrackingDbContext>();
+
+
+            var fsc = new FileStorageConfig();
+            configuration.Bind(nameof(FileStorageConfig), fsc);
+            services.AddSingleton(fsc);
+            services.AddTransient<IStorageProvider, FileStorageProvider>();
             return services;
         }
     }

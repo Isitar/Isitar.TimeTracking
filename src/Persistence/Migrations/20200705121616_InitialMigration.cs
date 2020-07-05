@@ -15,6 +15,8 @@ namespace Isitar.TimeTracking.Persistence.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Acronym = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Locale = table.Column<string>(nullable: true),
                     CreatedById = table.Column<Guid>(nullable: true),
                     CreatedAt = table.Column<Instant>(nullable: true),
                     UpdatedById = table.Column<Guid>(nullable: true),
@@ -81,7 +83,7 @@ namespace Isitar.TimeTracking.Persistence.Migrations
                     When = table.Column<Instant>(nullable: false),
                     OldValue = table.Column<string>(nullable: true),
                     NewValue = table.Column<string>(nullable: true),
-                    CreatedById = table.Column<Guid>(nullable: false),
+                    CreatedById = table.Column<Guid>(nullable: true),
                     ProjectId = table.Column<Guid>(nullable: true),
                     UserId = table.Column<Guid>(nullable: true)
                 },
