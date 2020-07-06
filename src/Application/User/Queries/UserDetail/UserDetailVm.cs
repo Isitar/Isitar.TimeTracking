@@ -20,14 +20,14 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
         public string UpdatedByName { get; set; }
         public Instant? UpdatedAt { get; set; }
 
-        public IEnumerable<AuditTrailEntry> AuditTrailEntries { get; } = new HashSet<AuditTrailEntry>();
+        public IEnumerable<AuditTrailEntry> AuditTrailEntries { get; set;  } = new HashSet<AuditTrailEntry>();
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<User, UserDetailVm>()
                 .ForMember(vm => vm.CreatedByName, opt => opt.MapFrom(u => u.CreatedBy.Name))
                 .ForMember(vm => vm.UpdatedByName, opt => opt.MapFrom(u => u.UpdatedBy.Name))
-                .ForMember(vm => vm.AuditTrailEntries, opt => opt.MapFrom(u => u.AuditTrailEntries.ToList()));
+                .ForMember(vm => vm.AuditTrailEntries, opt => opt.MapFrom(u => u.AuditTrailEntries));
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
                 .Include(u => u.UpdatedBy)
                 .Include(u => u.AuditTrailEntries)
                 .ProjectTo<UserDetailVm>(mapper.ConfigurationProvider)
+                
                 .SingleOrDefaultAsync(cancellationToken);
             if (null == vm)
             {
