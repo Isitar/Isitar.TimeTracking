@@ -2,6 +2,7 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
 {
     using System;
     using System.Threading.Tasks;
+    using Application.Project.Commands.DeleteProject;
     using Application.Project.Queries.ProjectDetail;
     using Application.Project.Queries.ProjectImage;
     using Attributes;
@@ -40,6 +41,15 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
             }
 
             return File(resp.Data, contentType, resp.Filename);
+        }
+        
+        [HttpDelete(ApiRoutes.Project.Delete, Name = nameof(ProjectController) + "/" + nameof(DeleteAsync))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesBadRequestResponse]
+        public async Task<IActionResult> DeleteAsync(Guid id)
+        {
+             await mediator.Send(new DeleteProjectCommand {Id = id});
+             return Ok();
         }
     }
 }

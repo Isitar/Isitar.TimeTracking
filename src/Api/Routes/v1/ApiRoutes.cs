@@ -46,5 +46,16 @@ namespace Isitar.TimeTracking.Api.Routes.v1
             public const string Single = ProjectBase + "/{id}";
             public const string Image = ProjectBase + "/{id}/image";
         }
+        
+        public static class TimeTracking
+        {   
+            private const string TimeTrackingBase = Base + "/time-tracking";
+            public const string All = TimeTrackingBase;
+            public const string Create = TimeTrackingBase;
+            public const string Update = TimeTrackingBase + "/{id}";
+            public const string Delete = TimeTrackingBase + "/{id}";
+            public const string Single = TimeTrackingBase + "/{id}";
+            
+        }
     }
 }
