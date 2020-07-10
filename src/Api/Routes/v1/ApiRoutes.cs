@@ -31,6 +31,20 @@ namespace Isitar.TimeTracking.Api.Routes.v1
             public const string Update = UserBase + "/{id}";
             public const string Delete = UserBase + "/{id}";
             public const string Single = UserBase + "/{id}";
+
+            public const string CreateProject = UserBase + "/{id}/project";
+            public const string AllProjects = UserBase + "/{id}/project";
+        }
+        
+        public static class Project
+        {
+            private const string ProjectBase = Base + "/project";
+            public const string All = ProjectBase;
+            public const string Create = ProjectBase;
+            public const string Update = ProjectBase + "/{id}";
+            public const string Delete = ProjectBase + "/{id}";
+            public const string Single = ProjectBase + "/{id}";
+            public const string Image = ProjectBase + "/{id}/image";
         }
     }
 }

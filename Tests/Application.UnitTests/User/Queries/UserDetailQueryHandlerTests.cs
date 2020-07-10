@@ -25,13 +25,6 @@ namespace Application.UnitTests.User.Queries
                 Email = "luescherpascal@gmail.com",
                 Locale = "de-CH",
                 Id = id,
-                CreatedBy = new User
-                {
-                    Id = createdId,
-                    Name = "creator"
-                },
-                CreatedById = createdId,
-                CreatedAt = Instant.FromUtc(2020, 1, 1, 0, 0, 0),
                 UpdatedBy = new User
                 {
                     Id = updatedId,
@@ -66,6 +59,8 @@ namespace Application.UnitTests.User.Queries
             var result = await queryHandler.Handle(q, CancellationToken.None);
             
             Assert.NotNull(result);
+            // cannot check created by since savechanges reverted it.
+            Assert.Equal("updator", result.UpdatedByName);
             Assert.Equal(2, result.AuditTrailEntries.Count());
         }
     }

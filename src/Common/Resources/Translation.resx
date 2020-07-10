@@ -23,6 +23,7 @@
     <data name="UnauthorizedException">You're not authorized to perform this action</data>
     <data name="User">User</data>
     <data name="Project">Project</data>
+    <data name="ProjectImage">Project image</data>
     <data name="TimeTrackingEntry">Time tracking entry</data>
     <data name="UserNotCreated">User not created</data>
     <data name="InvalidToken">Invalid token</data>

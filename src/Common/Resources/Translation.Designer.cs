@@ -69,6 +69,12 @@ namespace Common.Resources {
             }
         }
         
+        public static string ProjectImage {
+            get {
+                return ResourceManager.GetString("ProjectImage", resourceCulture);
+            }
+        }
+        
         public static string TimeTrackingEntry {
             get {
                 return ResourceManager.GetString("TimeTrackingEntry", resourceCulture);

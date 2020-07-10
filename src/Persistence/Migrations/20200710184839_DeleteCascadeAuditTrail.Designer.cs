@@ -3,6 +3,7 @@ using System;
 using Isitar.TimeTracking.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Isitar.TimeTracking.Persistence.Migrations
 {
     [DbContext(typeof(TimeTrackingDbContext))]
-    partial class TimeTrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200710184839_DeleteCascadeAuditTrail")]
+    partial class DeleteCascadeAuditTrail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

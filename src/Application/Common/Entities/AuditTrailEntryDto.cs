@@ -1,9 +1,9 @@
-namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
+namespace Isitar.TimeTracking.Application.Common.Entities
 {
     using System;
     using AutoMapper;
-    using Common.Mappings;
     using Domain.Entities;
+    using Mappings;
     using NodaTime;
 
     public class AuditTrailEntryDto : IMapFrom<AuditTrailEntry>

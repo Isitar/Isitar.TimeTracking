@@ -24,14 +24,9 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
 
         public async Task<UserDetailVm> Handle(UserDetailQuery request, CancellationToken cancellationToken)
         {
-            
             var vm = await dbContext.Users
                 .Where(u => u.Id.Equals(request.Id))
-                .Include(u => u.CreatedBy)
-                .Include(u => u.UpdatedBy)
-                .Include(u => u.AuditTrailEntries)
                 .ProjectTo<UserDetailVm>(mapper.ConfigurationProvider)
-                
                 .SingleOrDefaultAsync(cancellationToken);
             if (null == vm)
             {

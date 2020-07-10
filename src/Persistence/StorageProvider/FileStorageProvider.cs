@@ -27,7 +27,14 @@ namespace Isitar.TimeTracking.Persistence.StorageProvider
             try
             {
                 var storageFilename = CreateFilename(filename);
-                var fs = File.Create(CreatePath(storageFilename));
+                
+
+                var fullSavePath = CreatePath(storageFilename);
+                if (!Directory.Exists(Path.GetDirectoryName(fullSavePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(fullSavePath));
+                }
+                var fs = File.Create(fullSavePath);
                 content.Seek(0, SeekOrigin.Begin);
                 await content.CopyToAsync(fs);
                 fs.Close();
@@ -48,6 +55,7 @@ namespace Isitar.TimeTracking.Persistence.StorageProvider
                 var ms = new MemoryStream();
                 fs.Seek(0, SeekOrigin.Begin);
                 await fs.CopyToAsync(ms);
+                ms.Seek(0, SeekOrigin.Begin);
                 return Result<(Stream content, string filename)>.Success((ms, origFilename));
             }
             catch (Exception e)

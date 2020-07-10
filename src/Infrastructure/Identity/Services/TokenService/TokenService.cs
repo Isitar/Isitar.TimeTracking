@@ -60,7 +60,7 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.TokenService
             var jti = validatedToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
             var identityOptions = new IdentityOptions();
             var storedRefreshToken = await identityDbContext.RefreshTokens.SingleOrDefaultAsync(x => x.Token == refreshTokenString);
-            var userId = Guid.Parse(validatedToken.Claims.Single(x => x.Type == identityOptions.ClaimsIdentity.UserIdClaimType).Value);
+            var userId = Guid.Parse(validatedToken.Claims.FirstOrDefault(x => x.Type == identityOptions.ClaimsIdentity.UserIdClaimType)?.Value ?? Guid.Empty.ToString());
 
             if (storedRefreshToken == null
                 || instant.Now > storedRefreshToken.Expires
