@@ -20,7 +20,7 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
         public string UpdatedByName { get; set; }
         public Instant? UpdatedAt { get; set; }
 
-        public IEnumerable<AuditTrailEntry> AuditTrailEntries { get; set;  } = new HashSet<AuditTrailEntry>();
+        public ICollection<AuditTrailEntry> AuditTrailEntries { get; protected set; } = new HashSet<AuditTrailEntry>();
 
         public void Mapping(Profile profile)
         {
