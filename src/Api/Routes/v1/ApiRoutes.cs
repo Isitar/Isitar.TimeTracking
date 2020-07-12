@@ -42,11 +42,12 @@ namespace Isitar.TimeTracking.Api.Routes.v1
         {
             private const string ProjectBase = Base + "/project";
             public const string All = ProjectBase;
-            public const string Create = ProjectBase;
             public const string Update = ProjectBase + "/{id}";
             public const string Delete = ProjectBase + "/{id}";
             public const string Single = ProjectBase + "/{id}";
             public const string Image = ProjectBase + "/{id}/image";
+            public const string ReplaceImage = ProjectBase + "/{id}/image";
+            public const string RemoveImage = ProjectBase + "/{id}/image";
             
             public const string AllTimeTrackingEntries = ProjectBase + "/{id}/time-tracking-entry";
         }
