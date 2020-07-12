@@ -33,7 +33,7 @@ namespace Isitar.TimeTracking.Application.Project.Queries.ProjectList
                 .ProjectTo<ProjectSlimDto>(mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            return new ProjectListVm()
+            return new ProjectListVm
             {
                 Projects = projects
             };

@@ -1,9 +1,10 @@
 namespace Isitar.TimeTracking.Api.Controllers.V1
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Application.TimeTrackingEntry.Queries.TimeTrackingEntryList;
     using Application.User.Commands.CreateUser;
-    using Application.User.Commands.CreateUserCommand;
     using Application.User.Queries.UserDetail;
     using Attributes;
     using Microsoft.AspNetCore.Http;
@@ -40,7 +41,22 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
                 Locale = "de-CH",
                 Password = createUserRequest.Password,
             });
-            return CreatedAtRoute($"{nameof(UserController)}/{nameof(SingleAsync)}",new {id},null);
+            return CreatedAtRoute($"{nameof(UserController)}/{nameof(SingleAsync)}", new {id}, null);
+        }
+
+        [HttpGet(ApiRoutes.User.AllTimeTrackingEntries, Name = nameof(UserController) + "/" + nameof(AllTimeTrackingEntriesAsync))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesBadRequestResponse]
+        public async Task<IActionResult> AllTimeTrackingEntriesAsync(Guid id, [FromQuery] AllTimeTrackingEntriesFilter filter)
+        {
+            var resp = await mediator.Send(new TimeTrackingEntryListQuery
+            {
+                UserFilter = new HashSet<Guid> {id},
+                From = filter.From,
+                To = filter.To,
+                ProjectFilter = filter.ProjectIds
+            });
+            return Ok(resp);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTracking
         public string ProjectName { get; set; }
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<TimeTrackingEntry, TimeTrackingEntryDetailVm>()
+            profile.CreateMap<TimeTrackingEntry, TimeTrackingEntrySlimDto>()
                 .ForMember(vm => vm.UserName, opts => opts.MapFrom(e => e.User.Name))
                 .ForMember(vm => vm.ProjectName, opts => opts.MapFrom(e => e.Project.Name))
                 ;

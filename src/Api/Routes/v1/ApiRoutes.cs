@@ -34,6 +34,8 @@ namespace Isitar.TimeTracking.Api.Routes.v1
 
             public const string CreateProject = UserBase + "/{id}/project";
             public const string AllProjects = UserBase + "/{id}/project";
+            
+            public const string AllTimeTrackingEntries = UserBase + "/{id}/time-tracking-entry";
         }
         
         public static class Project
@@ -45,11 +47,13 @@ namespace Isitar.TimeTracking.Api.Routes.v1
             public const string Delete = ProjectBase + "/{id}";
             public const string Single = ProjectBase + "/{id}";
             public const string Image = ProjectBase + "/{id}/image";
+            
+            public const string AllTimeTrackingEntries = ProjectBase + "/{id}/time-tracking-entry";
         }
         
         public static class TimeTracking
         {   
-            private const string TimeTrackingBase = Base + "/time-tracking";
+            private const string TimeTrackingBase = Base + "/time-tracking-entry";
             public const string All = TimeTrackingBase;
             public const string Create = TimeTrackingBase;
             public const string Update = TimeTrackingBase + "/{id}";
