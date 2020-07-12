@@ -69,6 +69,7 @@ namespace Isitar.TimeTracking.Api
             app.UseAuthorization();
 
             app.UseMiddleware(typeof(LanguageMiddleware));
+            app.UseCustomExceptionHandler();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
