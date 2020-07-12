@@ -20,7 +20,7 @@ namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Commands.StartTracki
             return await Mediator.Send(new CanEditProjectQuery
             {
                 UserId = CurrentUserService.UserId.Value,
-                ProjectId = request.Id,
+                ProjectId = request.ProjectId,
             });
         }
     }
