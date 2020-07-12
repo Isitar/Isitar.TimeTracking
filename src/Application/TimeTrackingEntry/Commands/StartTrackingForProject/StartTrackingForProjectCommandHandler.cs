@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Application.TimeTracking.Commands.StartTrackingForProject
+namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Commands.StartTrackingForProject
 {
     using System.Threading;
     using System.Threading.Tasks;

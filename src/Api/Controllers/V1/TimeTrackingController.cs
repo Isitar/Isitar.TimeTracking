@@ -4,8 +4,8 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Application.Common.Interfaces;
-    using Application.TimeTracking.Commands.StartTrackingForProject;
-    using Application.TimeTracking.Queries.TimeTrackingEntryDetail;
+    using Application.TimeTrackingEntry.Commands.StartTrackingForProject;
+    using Application.TimeTrackingEntry.Queries.TimeTrackingEntryDetail;
     using Attributes;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;

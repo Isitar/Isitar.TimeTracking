@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Application.Project.Commands.CreateProject
+namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Commands.StopTrackingForUser
 {
     using System.Threading.Tasks;
     using Common.Authorization;
@@ -6,16 +6,16 @@ namespace Isitar.TimeTracking.Application.Project.Commands.CreateProject
     using Common.Interfaces;
     using MediatR;
 
-    public class CreateProjectForUserCommandAuthorizer : AbstractAuthorizer<CreateProjectForUserCommand>
+    public class StopTrackingForUserCommandAuthorizer : AbstractAuthorizer<StopTrackingForUserCommand>
     {
         private readonly IIdentityService identityService;
 
-        public CreateProjectForUserCommandAuthorizer(ICurrentUserService currentUserService, IMediator mediator, IIdentityService identityService) : base(currentUserService, mediator)
+        public StopTrackingForUserCommandAuthorizer(ICurrentUserService currentUserService, IMediator mediator, IIdentityService identityService) : base(currentUserService, mediator)
         {
             this.identityService = identityService;
         }
 
-        public override async Task<bool> AuthorizeAsync(CreateProjectForUserCommand request)
+        public override async Task<bool> AuthorizeAsync(StopTrackingForUserCommand request)
         {
             if (!(CurrentUserService.IsAuthenticated && CurrentUserService.UserId.HasValue))
             {

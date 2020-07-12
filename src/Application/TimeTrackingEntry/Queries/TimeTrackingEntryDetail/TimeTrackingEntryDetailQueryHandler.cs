@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Application.TimeTracking.Queries.TimeTrackingEntryDetail
+namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTrackingEntryDetail
 {
     using System.Linq;
     using System.Threading;

@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Application.TimeTracking.Commands.StopTrackingForUser
+namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Commands.StopTrackingForUser
 {
     using System.Linq;
     using System.Threading;

@@ -1,32 +1,27 @@
 namespace Isitar.TimeTracking.Application.Project.Commands.DeleteProject
 {
-    using System.Linq;
     using System.Threading.Tasks;
     using Common.Authorization;
     using Common.Interfaces;
+    using MediatR;
+    using Queries.CanEditProject;
 
     public class DeleteProjectCommandAuthorizer : AbstractAuthorizer<DeleteProjectCommand>
     {
-        private readonly ITimeTrackingDbContext dbContext;
+        public DeleteProjectCommandAuthorizer(ICurrentUserService currentUserService, IMediator mediator) : base(currentUserService, mediator) { }
 
-        public DeleteProjectCommandAuthorizer(ICurrentUserService currentUserService, IIdentityService identityService, ITimeTrackingDbContext dbContext) : base(currentUserService, identityService)
+        public async override Task<bool> AuthorizeAsync(DeleteProjectCommand request)
         {
-            this.dbContext = dbContext;
-        }
-
-        public override async Task<bool> AuthorizeAsync(DeleteProjectCommand request)
-        {
-            if (await IsCurrentUserAdminAsync())
-            {
-                return true;
-            }
-
-            if (!CurrentUserService.IsAuthenticated)
+            if (!(CurrentUserService.IsAuthenticated && CurrentUserService.UserId.HasValue))
             {
                 return false;
             }
 
-            return dbContext.Projects.Any(p => p.Id.Equals(request.Id) && p.UserId.Equals(CurrentUserService.UserId.Value));
+            return await Mediator.Send(new CanEditProjectQuery
+            {
+                UserId = CurrentUserService.UserId.Value,
+                ProjectId = request.Id,
+            });
         }
     }
 }
