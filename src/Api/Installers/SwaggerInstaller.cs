@@ -10,7 +10,6 @@ namespace Isitar.TimeTracking.Api.Installers
 
     public static class SwaggerInstaller
     {
-        
         public static void AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
@@ -25,7 +24,7 @@ namespace Isitar.TimeTracking.Api.Installers
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
-                
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = @"JWT Authorization header using the Bearer scheme.
@@ -55,6 +54,7 @@ namespace Isitar.TimeTracking.Api.Installers
                 });
             });
         }
+
         public static void UseSwaggerWithUi(this IApplicationBuilder app)
         {
             app.UseSwagger();
@@ -63,7 +63,6 @@ namespace Isitar.TimeTracking.Api.Installers
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Time Tracking Api");
                 c.RoutePrefix = "swagger";
             });
-
         }
     }
 }

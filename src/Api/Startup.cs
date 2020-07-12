@@ -32,10 +32,9 @@ namespace Isitar.TimeTracking.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
-                });;
+                .AddJsonOptions(options => { options.JsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb); });
+            ;
+
             services.AddInfrastructure(Configuration);
             services.AddPersistence(Configuration);
             services.AddApplication();
@@ -70,9 +69,8 @@ namespace Isitar.TimeTracking.Api
             app.UseAuthorization();
 
             app.UseMiddleware(typeof(LanguageMiddleware));
-            
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
