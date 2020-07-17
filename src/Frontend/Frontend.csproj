@@ -12,9 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\css" />
-      <Folder Include="wwwroot\fonts" />
-      <Folder Include="wwwroot\js" />
       <Folder Include="wwwroot\node_modules" />
     </ItemGroup>
 
