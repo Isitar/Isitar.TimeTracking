@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES6",
+    "sourceMap": true,
+    "rootDir": "./",
+    "outDir": "../wwwroot/js",
+    "moduleResolution": "node"
+  }
+}

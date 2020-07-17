@@ -1,0 +1,63 @@
+@page "/login"
+
+<section class="hero is-bold is-primary is-fullheight">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                    <form class="box" @onsubmit="Authenticate">
+                        @if (!string.IsNullOrWhiteSpace(Error))
+                        {
+                            <div class="notification">
+                                <button class="delete" @onclick="e => Error = null"></button>
+                                @Error
+                            </div>
+                        }
+
+                        <div class="field">
+                            <label class="label">Username (email)</label>
+                            <div class="control has-icons-left">
+                                <input type="text" placeholder="" class="input" @bind="Username" @bind:event="oninput">
+                                <span class="icon is-small is-left">
+                                    <Icon i="envelope"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control has-icons-left has-icons-right">
+                                <input type="@PasswordType" placeholder="*******" class="input" @bind="Password" @bind:event="oninput">
+                                <span class="icon is-small is-left">
+                                    <Icon i="lock"/>
+                                </span>
+                                <span class="icon is-small is-right show-password" @onclick="e => ShowPassword = !ShowPassword">
+                                    <Icon I="@(ShowPassword ? "eye-slash" : "eye")"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <button class="button is-success is-fullwidth" type="submit">
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code
+{
+
+    protected string Username { get; set; }
+    protected string Password { get; set; }
+
+    protected bool ShowPassword = false;
+
+    protected string Error { get; set; }
+
+    protected string PasswordType => ShowPassword ? "text" : "password";
+
+    private void Authenticate() { }
+}

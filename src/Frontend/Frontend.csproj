@@ -1,0 +1,112 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+      <AssemblyName>Isitar.TimeTracking.Frontend</AssemblyName>
+      <RootNamespace>Isitar.TimeTracking.Frontend</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Application\Application.csproj" />
+      <ProjectReference Include="..\Common\Common.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\js" />
+      <Folder Include="wwwroot\node_modules" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\FONT-LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.otf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\font\fonts\open-iconic.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\ICON-LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\open-iconic\README.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\js\css\site.min.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="wwwroot\scss\main.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="wwwroot\scss\frameworks\bulma.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="wwwroot\scss\global\vars.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="wwwroot\scss\globals\fonts.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="wwwroot\scss\globals\mixins.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="wwwroot\scss\globals\layout.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="wwwroot\scss\globals\fonts.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="Pages\Login.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+      <Content Update="wwwroot\scss\globals\icons.scss">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="Components\Common\Icon.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+      <Content Include="Assets\fonts\nunito-v12-latin-200.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-200.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-200italic.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-200italic.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-600.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-600.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-600italic.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-600italic.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-800.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-800.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-800italic.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-800italic.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-900.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-900.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-900italic.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-900italic.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-italic.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-italic.woff2" />
+      <Content Include="Assets\fonts\nunito-v12-latin-regular.woff" />
+      <Content Include="Assets\fonts\nunito-v12-latin-regular.woff2" />
+      <Content Include="Assets\scss\frameworks\bulma.scss" />
+      <Content Include="Assets\scss\globals\fonts.scss" />
+      <Content Include="Assets\scss\globals\icons.scss" />
+      <Content Include="Assets\scss\globals\layout.scss" />
+      <Content Include="Assets\scss\globals\mixins.scss" />
+      <Content Include="Assets\scss\globals\vars.scss" />
+      <Content Include="Assets\scss\main.scss" />
+      <Content Update="Assets\package.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="Assets\package-lock.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <TypeScriptCompile Include="Assets\ts\site.ts" />
+    </ItemGroup>
+
+</Project>

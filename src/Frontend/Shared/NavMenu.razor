@@ -1,0 +1,43 @@
+﻿<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a role="button" class="navbar-burger burger @NavMenuCssClass" aria-label="menu" aria-expanded="false"
+           @onclick="ToggleMobileNav">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="navbar-menu @NavMenuCssClass" id="menu">
+        <div class="navbar-end">
+            <NavLink href="/">Home</NavLink>
+            <div class="navbar-item is-hidden-mobile is-hidden-tablet-only">
+                <a class="button is-link is-small is-outlined is-inverted" @onclick="Logout">Logout</a>
+            </div>
+            <div class="navbar-item is-hidden-desktop" @onclick="Logout">
+                Logout
+            </div>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool showMobileNav = false;
+
+    private string NavMenuCssClass => showMobileNav ? "is-active" : null;
+
+    private void ToggleMobileNav()
+    {
+        showMobileNav = !showMobileNav;
+    }
+
+    private void ShowLoginDialog()
+    {
+        return;
+    }
+
+    private void Logout()
+    {
+        return;
+    }
+
+}

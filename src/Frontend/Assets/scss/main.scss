@@ -1,0 +1,11 @@
+@charset "utf-8";
+@import "globals/vars";
+@import "globals/fonts";
+@import "globals/icons";
+@import "globals/layout";
+
+@import "frameworks/bulma";
+
+body {
+  min-height:  100vh;
+}
