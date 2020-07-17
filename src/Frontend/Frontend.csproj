@@ -12,6 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="wwwroot\css" />
+      <Folder Include="wwwroot\fonts" />
       <Folder Include="wwwroot\js" />
       <Folder Include="wwwroot\node_modules" />
     </ItemGroup>
@@ -100,6 +102,10 @@
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
       <Content Update="Assets\package-lock.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="wwwroot\.gitignore">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
