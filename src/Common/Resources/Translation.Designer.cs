@@ -98,5 +98,11 @@ namespace Common.Resources {
                 return ResourceManager.GetString("UsernamePasswordWrong", resourceCulture);
             }
         }
+        
+        public static string UnspecifiedError {
+            get {
+                return ResourceManager.GetString("UnspecifiedError", resourceCulture);
+            }
+        }
     }
 }

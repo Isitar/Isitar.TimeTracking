@@ -28,4 +28,5 @@
     <data name="UserNotCreated">User not created</data>
     <data name="InvalidToken">Invalid token</data>
     <data name="UsernamePasswordWrong">Invalid Username / Password</data>
+    <data name="UnspecifiedError">Unspecified error</data>
 </root>
