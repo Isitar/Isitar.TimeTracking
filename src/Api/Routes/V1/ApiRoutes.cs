@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Api.Routes.v1
+namespace Isitar.TimeTracking.Api.Routes.V1
 {
     public class ApiRoutes
     {

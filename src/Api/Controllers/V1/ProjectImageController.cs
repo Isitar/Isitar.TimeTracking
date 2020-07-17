@@ -10,7 +10,7 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.StaticFiles;
     using Requests.V1.Project;
-    using Routes.v1;
+    using Routes.V1;
 
     public class ProjectImageController : ApiController
     {

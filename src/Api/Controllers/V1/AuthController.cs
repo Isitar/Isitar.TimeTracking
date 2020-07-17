@@ -11,7 +11,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Requests.V1.Auth;
-    using Routes.v1;
+    using Routes.V1;
 
     public class AuthController : ApiController
     {
@@ -58,7 +58,7 @@
 
         [AllowAnonymous]
         [HttpPost(ApiRoutes.Auth.Refresh, Name = nameof(AuthController) + "/" + nameof(RefreshTokenAsync))]
-        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
         [ProducesBadRequestResponse]
         public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenRequest refreshTokenRequest)
         {
@@ -73,7 +73,7 @@
 
         [AllowAnonymous]
         [HttpPost(ApiRoutes.Auth.Login, Name = nameof(AuthController) + "/" + nameof(TokenAsync))]
-        [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
         [ProducesBadRequestResponse]
         public async Task<IActionResult> TokenAsync([FromBody] LoginRequest loginRequest)
         {
