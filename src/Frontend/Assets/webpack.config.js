@@ -28,6 +28,9 @@ const backendConfig = (env) => {
         entry: {
             site: [
                 "./ts/site.ts"
+            ],
+            icons: [
+                "./ts/icons.ts"
             ]
         },
         output: {
@@ -58,6 +61,7 @@ const backendConfig = (env) => {
                             loader: "css-loader",
                             options: {
                                 url: false,
+                                import: false
                             }
                         },
                         "sass-loader"

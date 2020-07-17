@@ -1,23 +1,29 @@
 @page "/login"
+@layout FullpageLayout
+
+@using Isitar.TimeTracking.Frontend.Services
+@inject NavigationManager NavigationManager
+@inject IAuthService AuthService
 
 <section class="hero is-bold is-primary is-fullheight">
     <div class="hero-body">
         <div class="container">
             <div class="columns is-centered">
                 <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                    @if (!string.IsNullOrWhiteSpace(Error))
+                    {
+                        <div class="notification">
+                            <button class="delete" @onclick="e => Error = null"></button>
+                            @Error
+                        </div>
+                    }
                     <form class="box" @onsubmit="Authenticate">
-                        @if (!string.IsNullOrWhiteSpace(Error))
-                        {
-                            <div class="notification">
-                                <button class="delete" @onclick="e => Error = null"></button>
-                                @Error
-                            </div>
-                        }
+
 
                         <div class="field">
                             <label class="label">Username (email)</label>
                             <div class="control has-icons-left">
-                                <input type="text" placeholder="" class="input" @bind="Username" @bind:event="oninput">
+                                <input type="text" placeholder="" class="input" @bind="Username" @bind:event="oninput" autofocus="">
                                 <span class="icon is-small is-left">
                                     <Icon i="envelope"/>
                                 </span>
@@ -59,5 +65,17 @@
 
     protected string PasswordType => ShowPassword ? "text" : "password";
 
-    private void Authenticate() { }
+
+    private async Task Authenticate()
+    {
+        var res = await AuthService.LoginAsync(Username, Password);
+        if (res.Successful)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            Error = res.ErrorsCompact();
+        }
+    }
 }

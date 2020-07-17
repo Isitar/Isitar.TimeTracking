@@ -1,0 +1,1 @@
+import '../scss/icons.scss';

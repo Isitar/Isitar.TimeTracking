@@ -1,2 +1,15 @@
 ﻿@page "/"
 
+<AuthorizeView>
+    <Authorized>
+        <h1>welcome authorized user @context.User.Identity.Name</h1>
+    </Authorized>
+    <NotAuthorized>
+        <h1>welcome non auth user</h1>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code
+{
+    
+}

@@ -32,12 +32,14 @@ $title-color: $primary;
 @import "../../node_modules/bulma/sass/elements/image";
 @import "../../node_modules/bulma/sass/elements/notification";
 @import "../../node_modules/bulma/sass/elements/other";
+
 @import "../../node_modules/bulma/sass/elements/progress";
 @import "../../node_modules/bulma/sass/elements/table";
 @import "../../node_modules/bulma/sass/elements/tag";
 @import "../../node_modules/bulma/sass/elements/title";
 @import "../../node_modules/bulma/sass/form/all";
 @import "../../node_modules/bulma/sass/grid/all";
+@import "../../node_modules/bulma/sass/helpers/all";
 @import "../../node_modules/bulma/sass/layout/hero";
 @import "../../node_modules/bulma/sass/layout/section";
 @import "../../node_modules/bulma/sass/layout/footer";

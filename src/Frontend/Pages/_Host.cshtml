@@ -15,12 +15,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Frontend</title>
     <base href="~/"/>
-    <script src="css/site.min.css"></script>
     <link href="css/site.min.css" rel="stylesheet"/>
+    <link href="css/icons.min.css" rel="stylesheet"/>
 </head>
 <body>
 <app>
-    <component type="typeof(App)" render-mode="ServerPrerendered"/>
+    <component type="typeof(App)" render-mode="Server"/>
 </app>
 
 <div id="blazor-error-ui">
@@ -34,6 +34,7 @@
     <a class="dismiss">🗙</a>
 </div>
 
+<script src="js/icons.min.js"></script>
 <script src="js/site.min.js"></script>
 <script src="_framework/blazor.server.js"></script>
 

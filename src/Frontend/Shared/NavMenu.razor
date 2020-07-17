@@ -1,4 +1,6 @@
-﻿<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+﻿@using Blazored.LocalStorage
+@inject ILocalStorageService LocalStorage
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a role="button" class="navbar-burger burger @NavMenuCssClass" aria-label="menu" aria-expanded="false"
            @onclick="ToggleMobileNav">
@@ -9,7 +11,7 @@
     </div>
     <div class="navbar-menu @NavMenuCssClass" id="menu">
         <div class="navbar-end">
-            <NavLink href="/">Home</NavLink>
+            <NavLink class="navbar-item" ActiveClass="is-active" href="/">Home</NavLink>
             <div class="navbar-item is-hidden-mobile is-hidden-tablet-only">
                 <a class="button is-link is-small is-outlined is-inverted" @onclick="Logout">Logout</a>
             </div>
@@ -35,9 +37,10 @@
         return;
     }
 
-    private void Logout()
+    private async Task Logout()
     {
-        return;
+        await LocalStorage.RemoveItemAsync("token");
+        await LocalStorage.RemoveItemAsync("username");
     }
 
 }

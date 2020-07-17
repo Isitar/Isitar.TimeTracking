@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Api\Api.csproj" />
       <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
@@ -89,7 +90,6 @@
       <Content Include="Assets\fonts\nunito-v12-latin-regular.woff2" />
       <Content Include="Assets\scss\frameworks\bulma.scss" />
       <Content Include="Assets\scss\globals\fonts.scss" />
-      <Content Include="Assets\scss\globals\icons.scss" />
       <Content Include="Assets\scss\globals\layout.scss" />
       <Content Include="Assets\scss\globals\mixins.scss" />
       <Content Include="Assets\scss\globals\vars.scss" />
@@ -106,10 +106,18 @@
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
+      <Content Update="Shared\FullpageLayout.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
+      <TypeScriptCompile Include="Assets\ts\icons.ts" />
       <TypeScriptCompile Include="Assets\ts\site.ts" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Blazored.LocalStorage" Version="2.1.6" />
     </ItemGroup>
 
 </Project>
