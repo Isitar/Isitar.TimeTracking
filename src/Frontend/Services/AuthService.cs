@@ -30,7 +30,7 @@ namespace Isitar.TimeTracking.Frontend.Services
 
         public async Task<Result> LoginAsync(string username, string password)
         {
-            var res = await httpClient.PostAsync("login", new StringContent(JsonSerializer.Serialize(new
+            var res = await httpClient.PostAsync("auth/login", new StringContent(JsonSerializer.Serialize(new
             {
                 Username = username,
                 Password = password

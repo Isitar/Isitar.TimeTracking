@@ -1,8 +1,10 @@
 namespace Isitar.TimeTracking.Frontend
 {
     using System;
+    using System.Net.Http.Headers;
     using System.Text.Json;
     using Blazored.LocalStorage;
+    using Configs;
     using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Components.Authorization;
@@ -25,11 +27,20 @@ namespace Isitar.TimeTracking.Frontend
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var apiConfig = new ApiConfig();
+            Configuration.Bind("Api", apiConfig);
+            services.AddSingleton(apiConfig);
+            
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
             services.AddHttpClient<IAuthService, AuthService>(cfg =>
             {
-                cfg.BaseAddress = new Uri("http://localhost:5001/api/v1/auth/");
+                cfg.BaseAddress = new Uri(apiConfig.BaseUrl);
+            });
+            services.AddHttpClient<IProjectService, ProjectService>(cfg =>
+            {
+                cfg.BaseAddress = new Uri(apiConfig.BaseUrl);
             });
 
             var jsonSerializerOptions = new JsonSerializerOptions

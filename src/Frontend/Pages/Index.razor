@@ -1,9 +1,20 @@
 ﻿@page "/"
+@using Isitar.TimeTracking.Application.Project.Queries.ProjectList
 @attribute [Authorize]
 
-<h1>welcome authorized user</h1>
-<p>hi</p>
+<AuthorizeView>
+    <section class="page-index">
+        <h1 class="title">Welcome @context.User.Identity.Name</h1>
+        <ProjectCard Project="@Project"></ProjectCard>
+    </section>
+</AuthorizeView>
+
 @code
 {
-    
+    public ProjectSlimDto Project { get; set; } = new ProjectSlimDto
+    {
+        Id = Guid.Parse("db9210d5-c47f-4b7b-9d97-917d1641e2f7"),
+        Name = "some project",
+        HasImage = true,
+    };
 }
