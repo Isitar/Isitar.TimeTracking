@@ -1,5 +1,5 @@
-﻿@using Blazored.LocalStorage
-@inject ILocalStorageService LocalStorage
+﻿@using Isitar.TimeTracking.Frontend.Services
+@inject IAuthService AuthService
 <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a role="button" class="navbar-burger burger @NavMenuCssClass" aria-label="menu" aria-expanded="false"
@@ -37,10 +37,9 @@
         return;
     }
 
-    private async Task Logout()
+    private Task Logout()
     {
-        await LocalStorage.RemoveItemAsync("token");
-        await LocalStorage.RemoveItemAsync("username");
+        return AuthService.LogoutAsync();
     }
 
 }

@@ -1,10 +1,12 @@
 @charset "utf-8";
 @import "globals/vars";
 @import "globals/fonts";
-@import "globals/layout";
 
 @import "frameworks/bulma";
+
+@import "globals/layout";
 @import "components/components";
+@import "pages/pages";
 
 body {
   min-height:  100vh;

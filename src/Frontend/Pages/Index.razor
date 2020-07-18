@@ -1,14 +1,8 @@
 ﻿@page "/"
+@attribute [Authorize]
 
-<AuthorizeView>
-    <Authorized>
-        <h1>welcome authorized user @context.User.Identity.Name</h1>
-    </Authorized>
-    <NotAuthorized>
-        <h1>welcome non auth user</h1>
-    </NotAuthorized>
-</AuthorizeView>
-
+<h1>welcome authorized user</h1>
+<p>hi</p>
 @code
 {
     

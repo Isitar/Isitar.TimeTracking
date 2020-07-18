@@ -1,18 +1,17 @@
 @page "/login"
-@layout FullpageLayout
-
 @using Isitar.TimeTracking.Frontend.Services
+@layout FullpageLayout
 @inject NavigationManager NavigationManager
 @inject IAuthService AuthService
 
-<section class="hero is-bold is-primary is-fullheight">
+<section class="hero is-bold is-primary is-fullheight page-login">
     <div class="hero-body">
         <div class="container">
             <div class="columns is-centered">
                 <div class="column is-5-tablet is-4-desktop is-3-widescreen">
                     @if (!string.IsNullOrWhiteSpace(Error))
                     {
-                        <div class="notification">
+                        <div class="notification is-danger">
                             <button class="delete" @onclick="e => Error = null"></button>
                             @Error
                         </div>
@@ -36,7 +35,7 @@
                                 <span class="icon is-small is-left">
                                     <Icon i="lock"/>
                                 </span>
-                                <span class="icon is-small is-right show-password" @onclick="e => ShowPassword = !ShowPassword">
+                                <span class="icon is-small is-right show-password" @onclick="ToggleShowPassword">
                                     <Icon I="@(ShowPassword ? "eye-slash" : "eye")"/>
                                 </span>
                             </div>
@@ -66,7 +65,7 @@
     protected string PasswordType => ShowPassword ? "text" : "password";
 
 
-    private async Task Authenticate()
+    protected  async Task Authenticate()
     {
         var res = await AuthService.LoginAsync(Username, Password);
         if (res.Successful)
@@ -77,5 +76,11 @@
         {
             Error = res.ErrorsCompact();
         }
+    }
+
+    protected void ToggleShowPassword()
+    {
+        ShowPassword = !ShowPassword;
+        Console.WriteLine($"toggled password {ShowPassword}");
     }
 }
