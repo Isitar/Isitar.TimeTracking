@@ -14,7 +14,7 @@ namespace Isitar.TimeTracking.Api.Routes.V1
             public const string Login = AuthBase + "/login";
             public const string Logout = AuthBase + "/logout";
             public const string Refresh = AuthBase + "/refresh";
-            
+
             public const string ChangePassword = AuthBase + "/{id}/password";
             public const string ChangeUsername = AuthBase + "/{id}/username";
 
@@ -22,7 +22,7 @@ namespace Isitar.TimeTracking.Api.Routes.V1
             public const string RemoveRole = AuthBase + "/{id}/role/{roleName}";
             public const string UserRoles = AuthBase + "/{id}/role";
         }
-        
+
         public static class User
         {
             private const string UserBase = Base + "/user";
@@ -34,10 +34,12 @@ namespace Isitar.TimeTracking.Api.Routes.V1
 
             public const string CreateProject = UserBase + "/{id}/project";
             public const string AllProjects = UserBase + "/{id}/project";
-            
+
             public const string AllTimeTrackingEntries = UserBase + "/{id}/time-tracking-entry";
+            public const string CurrentTimeTrackingEntry = UserBase + "/{id}/time-tracking-entry/current";
+            public const string StartTracking = UserBase + "/{id}/time-tracking-entry";
         }
-        
+
         public static class Project
         {
             private const string ProjectBase = Base + "/project";
@@ -48,19 +50,18 @@ namespace Isitar.TimeTracking.Api.Routes.V1
             public const string Image = ProjectBase + "/{id}/image";
             public const string ReplaceImage = ProjectBase + "/{id}/image";
             public const string RemoveImage = ProjectBase + "/{id}/image";
-            
+
             public const string AllTimeTrackingEntries = ProjectBase + "/{id}/time-tracking-entry";
         }
-        
+
         public static class TimeTracking
-        {   
+        {
             private const string TimeTrackingBase = Base + "/time-tracking-entry";
             public const string All = TimeTrackingBase;
             public const string Create = TimeTrackingBase;
             public const string Update = TimeTrackingBase + "/{id}";
             public const string Delete = TimeTrackingBase + "/{id}";
             public const string Single = TimeTrackingBase + "/{id}";
-            
         }
     }
 }

@@ -2,8 +2,8 @@ namespace Isitar.TimeTracking.Api.Requests.V1.TimeTracking
 {
     using System;
 
-    public class CreateTimeTrackingRequest
+    public class StartTimeTrackingRequest
     {
-        public Guid ProjectId { get; set; }
+        public Guid? ProjectId { get; set; }
     }
 }

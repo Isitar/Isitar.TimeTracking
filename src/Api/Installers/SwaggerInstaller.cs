@@ -7,6 +7,7 @@ namespace Isitar.TimeTracking.Api.Installers
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
+    using NodaTime;
 
     public static class SwaggerInstaller
     {
@@ -52,6 +53,8 @@ namespace Isitar.TimeTracking.Api.Installers
                         new List<string>()
                     }
                 });
+
+                c.MapType<Instant>(() => new OpenApiSchema {Type = "string"});
             });
         }
 
