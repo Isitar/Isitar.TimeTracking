@@ -5,5 +5,7 @@ namespace Isitar.TimeTracking.Frontend.Common
         
         public const string JwtTokenKey = "jwttoken";
         public  const string RefreshTokenKey = "refreshtoken";
+
+        public const string IsRefreshing = "isrefreshingtoken";
     }
 }

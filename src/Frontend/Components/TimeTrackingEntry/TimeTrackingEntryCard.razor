@@ -1,0 +1,32 @@
+@using Microsoft.Extensions.Internal
+@inherits TimeTrackingEntryCardBase
+
+<div class="card isitar-project-card">
+
+    <header class="card-header">
+        <p class="card-header-title">
+            Currently Working on @TimeTrackingEntryDetail.ProjectName
+        </p>
+    </header>
+
+    <div class="card-content">
+        <p>
+            <span>Since: <time>@TimeTrackingEntryDetail.From.ToString()</time></span>
+            @if (TimeTrackingEntryDetail.To.HasValue)
+            {
+                <br/>
+                <span>To: <time>@TimeTrackingEntryDetail.To.ToString()</time></span>
+            }
+            else
+            {
+                <br/>
+                <span>Time: @TimePassed</span>
+            }
+        </p>
+
+    </div>
+
+    <footer class="card-footer">
+        <btn href="#" class="card-footer-item">Stop working</btn>
+    </footer>
+</div>

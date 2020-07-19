@@ -1,20 +1,79 @@
 ﻿@page "/"
+@using Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTrackingEntryDetail
+@using NodaTime
 @using Isitar.TimeTracking.Application.Project.Queries.ProjectList
+@using Isitar.TimeTracking.Frontend.Services
+@using System.Security.Claims
 @attribute [Authorize]
 
-<AuthorizeView>
-    <section class="page-index">
-        <h1 class="title">Welcome @context.User.Identity.Name</h1>
-        <ProjectCard Project="@Project"></ProjectCard>
-    </section>
-</AuthorizeView>
+<section class="page-index">
+    <h1 class="title">Welcome Username</h1>
+    <div class="columns">
+        <div class="column">
+            <TimeTrackingEntryCard TimeTrackingEntryDetail="@TimeTrackingEntryDetail"/>
+        </div>
+    </div>
+
+    <ul class="columns is-multiline">
+        @foreach (var userProject in UserProjects)
+        {
+            <li class="column is-one-third-desktop is-half-tablet">
+                <ProjectCard Project="@userProject"/>
+            </li>
+        }
+        <li class="column is-one-quarter-widescreen is-one-third-desktop is-half-tablet">
+            <div class="new-bulk-order-box has-text-centered" @onclick="CreateProject">
+                <p>
+                    New Project
+                </p>
+            </div>
+        </li>
+    </ul>
+</section>
 
 @code
 {
-    public ProjectSlimDto Project { get; set; } = new ProjectSlimDto
+    public TimeTrackingEntryDetailVm TimeTrackingEntryDetail { get; set; } = new TimeTrackingEntryDetailVm
     {
         Id = Guid.Parse("db9210d5-c47f-4b7b-9d97-917d1641e2f7"),
-        Name = "some project",
-        HasImage = true,
+        From = Instant.FromUtc(2020, 07, 18, 15, 1, 5),
+        ProjectId = Guid.NewGuid(),
+        ProjectName = "Sahli",
+        UserId = Guid.NewGuid(),
+        UserName = "lpa",
     };
+
+
+    public IEnumerable<ProjectSlimDto> UserProjects { get; set; } = new ProjectSlimDto[0];
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadUserProjectsAsync();
+        }
+    }
+
+    [Inject]
+    public IProjectService ProjectService { get; set; }
+
+    [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    private async Task LoadUserProjectsAsync()
+    {
+        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var userId = authenticationState.User.Claims
+            .Where(c => c.Type.Equals(ClaimTypes.NameIdentifier))
+            .Select(c =>
+            {
+                Guid x;
+                return Guid.TryParse(c.Value, out x) ? x : Guid.Empty;
+            })
+            .FirstOrDefault(guid => !Guid.Empty.Equals(guid));
+        UserProjects = (await ProjectService.ProjectsForUserAsync(userId)).Projects;
+        StateHasChanged();
+    }
+
+    private void CreateProject() { }
 }

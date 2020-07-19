@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Common\Exceptions" />
       <Folder Include="wwwroot\node_modules" />
     </ItemGroup>
 
@@ -115,6 +116,9 @@
       <Content Update="wwwroot\images\projectplaceholder.png">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="Components\TimeTrackingEntry\TimeTrackingEntryCard.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </Content>
     </ItemGroup>
 

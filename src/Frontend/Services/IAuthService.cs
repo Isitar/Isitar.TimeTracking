@@ -7,5 +7,7 @@ namespace Isitar.TimeTracking.Frontend.Services
     {
         public Task<Result> LoginAsync(string username, string password);
         public Task LogoutAsync();
+
+        public Task<Result> RefreshAsync();
     }
 }

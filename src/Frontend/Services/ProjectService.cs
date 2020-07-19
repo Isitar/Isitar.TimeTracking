@@ -1,29 +1,31 @@
 namespace Isitar.TimeTracking.Frontend.Services
 {
     using System;
-    using System.Net.Http;
     using System.Threading.Tasks;
-    using Blazored.LocalStorage;
-    using Common;
+    using Application.Project.Queries.ProjectList;
 
     public class ProjectService : IProjectService
     {
-        private readonly HttpClient httpClient;
-        private readonly ILocalStorageService localStorageService;
+        private readonly IGenericService genericService;
 
-        public ProjectService(HttpClient httpClient, ILocalStorageService localStorageService)
+        public ProjectService(IGenericService genericService)
         {
-            this.httpClient = httpClient;
-            this.localStorageService = localStorageService;
+            this.genericService = genericService;
         }
 
         public async Task<string> ProjectImageAsync(Guid id)
         {
-            var resp = await httpClient.GetAuthorizedAsync($"project/{id.ToString()}/image", localStorageService);
+            var resp = await genericService.GetAsyncRaw($"project/{id.ToString()}/image");
             var bytes = await resp.Content.ReadAsByteArrayAsync();
             var mimeType = resp.Content.Headers.ContentType.MediaType;
             var base64 = Convert.ToBase64String(bytes, Base64FormattingOptions.None);
             return $"data:{mimeType};base64,{base64}";
+        }
+
+        public Task<ProjectListVm> ProjectsForUserAsync(Guid userId)
+        {
+            return genericService.GetAsync<ProjectListVm>($"user/{userId.ToString()}/project");
+            //return httpClient.GetAsJsonAsync<ProjectListVm>($"user/{userId.ToString()}/project", localStorageService, jsonSerializerOptions);
         }
     }
 }

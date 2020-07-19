@@ -6,6 +6,9 @@ namespace Isitar.TimeTracking.Frontend
     using Blazored.LocalStorage;
     using Configs;
     using Data;
+    using global::Common;
+    using Infrastructure;
+    using Infrastructure.Instant;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Hosting;
@@ -38,7 +41,8 @@ namespace Isitar.TimeTracking.Frontend
             {
                 cfg.BaseAddress = new Uri(apiConfig.BaseUrl);
             });
-            services.AddHttpClient<IProjectService, ProjectService>(cfg =>
+            services.AddScoped<IProjectService, ProjectService>();    
+            services.AddHttpClient<IGenericService, GenericService>(cfg =>
             {
                 cfg.BaseAddress = new Uri(apiConfig.BaseUrl);
             });
@@ -53,6 +57,7 @@ namespace Isitar.TimeTracking.Frontend
 
 
             services.AddBlazoredLocalStorage();
+            services.AddTransient<IInstant, SystemClockInstant>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
