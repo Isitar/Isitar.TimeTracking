@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTrackingEntryDetail
+namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.ActiveTimeTrackingEntryDetail
 {
     using System.Linq;
     using System.Threading;
@@ -10,30 +10,35 @@ namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTracking
     using global::Common.Resources;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
+    using TimeTrackingEntryDetail;
 
-    public class TimeTrackingEntryDetailQueryHandler : IRequestHandler<TimeTrackingEntryDetailQuery, TimeTrackingEntryDetailVm>
+    public class ActiveTimeTrackingEntryDetailQueryHandler : IRequestHandler<ActiveTimeTrackingEntryDetailQuery, TimeTrackingEntryDetailVm>
     {
         private readonly ITimeTrackingDbContext dbContext;
         private readonly IMapper mapper;
 
-        public TimeTrackingEntryDetailQueryHandler(ITimeTrackingDbContext dbContext, IMapper mapper)
+        public ActiveTimeTrackingEntryDetailQueryHandler(ITimeTrackingDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
         }
 
-        public async Task<TimeTrackingEntryDetailVm> Handle(TimeTrackingEntryDetailQuery request, CancellationToken cancellationToken)
+        public async Task<TimeTrackingEntryDetailVm> Handle(ActiveTimeTrackingEntryDetailQuery request, CancellationToken cancellationToken)
         {
             var vm = await dbContext.TimeTrackingEntries
-                .Where(tte => tte.Id.Equals(request.Id))
+                .Where(tte => !tte.To.HasValue)
+                .Where(tte => tte.UserId.Equals(request.UserId))
                 .ProjectTo<TimeTrackingEntryDetailVm>(mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
+            
             if (null == vm)
             {
-                throw new NotFoundException(Translation.TimeTrackingEntry, request.Id);
+                throw new NotFoundException(Translation.TimeTrackingEntry, null);
             }
 
             return vm;
         }
+        
+        
     }
 }

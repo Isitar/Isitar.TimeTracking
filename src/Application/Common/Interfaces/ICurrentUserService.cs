@@ -5,6 +5,6 @@ namespace Isitar.TimeTracking.Application.Common.Interfaces
     public interface ICurrentUserService
     {
         public Guid? UserId { get; }
-        public bool IsAuthenticated { get; set; }
+        public bool IsAuthenticated { get; }
     }
 }
