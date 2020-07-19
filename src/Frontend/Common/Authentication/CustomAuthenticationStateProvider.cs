@@ -1,4 +1,4 @@
-namespace Isitar.TimeTracking.Frontend.Data
+namespace Isitar.TimeTracking.Frontend.Common.Authentication
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,6 @@ namespace Isitar.TimeTracking.Frontend.Data
     using System.Text.Json;
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
-    using Common;
     using Microsoft.AspNetCore.Components.Authorization;
 
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider

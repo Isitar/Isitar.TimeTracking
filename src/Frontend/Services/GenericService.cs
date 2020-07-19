@@ -46,6 +46,26 @@ namespace Isitar.TimeTracking.Frontend.Services
             return await CallApi<TResponse>(HttpMethod.Post, uri, data);
         }
 
+        public Task<HttpResponseMessage> PostAsyncRaw<TRequest>(string uri, TRequest data)
+        {
+            return CallApiRaw(HttpMethod.Post, uri, data);
+        }
+
+        public Task<HttpResponseMessage> PostAsyncRaw(string uri)
+        {
+            return CallApiRaw(HttpMethod.Post, uri);
+        }
+
+        public Task<HttpResponseMessage> StopAsyncRaw<TRequest>(string uri, TRequest data)
+        {
+            return CallApiRaw(new HttpMethod("STOP"), uri, data);
+        }
+
+        public Task<HttpResponseMessage> StopAsyncRaw(string uri)
+        {
+            return CallApiRaw(new HttpMethod("STOP"), uri);
+        }
+
         public async Task<TResponse> PutAsync<TRequest, TResponse>(string uri, TRequest data)
         {
             return await CallApi<TResponse>(HttpMethod.Put, uri, data);
@@ -55,7 +75,7 @@ namespace Isitar.TimeTracking.Frontend.Services
         {
             var request = new HttpRequestMessage(method, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            if (data != null)
+            if (null != data)
             {
                 request.Content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
             }

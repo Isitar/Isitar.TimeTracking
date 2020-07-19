@@ -1,14 +1,12 @@
 namespace Isitar.TimeTracking.Frontend.Services
 {
-    using System.Diagnostics;
     using System.Net.Http;
     using System.Text.Json;
-    using System.Threading;
     using System.Threading.Tasks;
     using Application.Common.Entities;
     using Blazored.LocalStorage;
     using Common;
-    using Data;
+    using Common.Authentication;
     using global::Common.Resources;
     using Infrastructure.Identity.Services.TokenService;
     using Microsoft.AspNetCore.Components.Authorization;
@@ -96,10 +94,10 @@ namespace Isitar.TimeTracking.Frontend.Services
                     }
                 });
             }
+
             var result = await RefreshTask;
             RefreshTask = null;
             return result;
-
         }
     }
 }

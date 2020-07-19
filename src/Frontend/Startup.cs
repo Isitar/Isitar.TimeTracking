@@ -1,13 +1,11 @@
 namespace Isitar.TimeTracking.Frontend
 {
     using System;
-    using System.Net.Http.Headers;
     using System.Text.Json;
     using Blazored.LocalStorage;
+    using Common.Authentication;
     using Configs;
-    using Data;
     using global::Common;
-    using Infrastructure;
     using Infrastructure.Instant;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Components.Authorization;
@@ -15,6 +13,8 @@ namespace Isitar.TimeTracking.Frontend
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using NodaTime;
+    using NodaTime.Serialization.SystemTextJson;
     using Services;
 
     public class Startup
@@ -33,31 +33,27 @@ namespace Isitar.TimeTracking.Frontend
             var apiConfig = new ApiConfig();
             Configuration.Bind("Api", apiConfig);
             services.AddSingleton(apiConfig);
-            
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
-
-            services.AddHttpClient<IAuthService, AuthService>(cfg =>
-            {
-                cfg.BaseAddress = new Uri(apiConfig.BaseUrl);
-            });
-            services.AddScoped<IProjectService, ProjectService>();    
-            services.AddHttpClient<IGenericService, GenericService>(cfg =>
-            {
-                cfg.BaseAddress = new Uri(apiConfig.BaseUrl);
-            });
 
             var jsonSerializerOptions = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
             };
+            jsonSerializerOptions.ConfigureForNodaTime(DateTimeZoneProviders.Tzdb);
             services.AddSingleton(jsonSerializerOptions);
 
-            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
 
+            services.AddHttpClient<IAuthService, AuthService>(cfg => { cfg.BaseAddress = new Uri(apiConfig.BaseUrl); });
+            services.AddHttpClient<IGenericService, GenericService>(cfg => { cfg.BaseAddress = new Uri(apiConfig.BaseUrl); });
 
             services.AddBlazoredLocalStorage();
-            services.AddTransient<IInstant, SystemClockInstant>();
+
+            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            services.AddScoped<IInstant, SystemClockInstant>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ITimeTrackingService, TimeTrackingService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,16 +1,22 @@
 ﻿@page "/"
+@using Isitar.TimeTracking.Frontend.Common.Authentication
 @using Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTrackingEntryDetail
-@using NodaTime
 @using Isitar.TimeTracking.Application.Project.Queries.ProjectList
 @using Isitar.TimeTracking.Frontend.Services
-@using System.Security.Claims
 @attribute [Authorize]
 
 <section class="page-index">
     <h1 class="title">Welcome Username</h1>
     <div class="columns">
         <div class="column">
-            <TimeTrackingEntryCard TimeTrackingEntryDetail="@TimeTrackingEntryDetail"/>
+            @if (null != TimeTrackingEntryDetail)
+            {
+                <TimeTrackingEntryCard TimeTrackingEntryDetail="@TimeTrackingEntryDetail"/>
+            }
+            else
+            {
+                <p>Currently not working</p>
+            }
         </div>
     </div>
 
@@ -33,16 +39,7 @@
 
 @code
 {
-    public TimeTrackingEntryDetailVm TimeTrackingEntryDetail { get; set; } = new TimeTrackingEntryDetailVm
-    {
-        Id = Guid.Parse("db9210d5-c47f-4b7b-9d97-917d1641e2f7"),
-        From = Instant.FromUtc(2020, 07, 18, 15, 1, 5),
-        ProjectId = Guid.NewGuid(),
-        ProjectName = "Sahli",
-        UserId = Guid.NewGuid(),
-        UserName = "lpa",
-    };
-
+    public TimeTrackingEntryDetailVm TimeTrackingEntryDetail { get; private set; }
 
     public IEnumerable<ProjectSlimDto> UserProjects { get; set; } = new ProjectSlimDto[0];
 
@@ -51,6 +48,7 @@
         if (firstRender)
         {
             await LoadUserProjectsAsync();
+            await LoadCurrentTimeTrackingEntry();
         }
     }
 
@@ -58,20 +56,22 @@
     public IProjectService ProjectService { get; set; }
 
     [Inject]
+    public ITimeTrackingService TimeTrackingService { get; set; }
+
+    [Inject]
     public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
     private async Task LoadUserProjectsAsync()
     {
-        var authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var userId = authenticationState.User.Claims
-            .Where(c => c.Type.Equals(ClaimTypes.NameIdentifier))
-            .Select(c =>
-            {
-                Guid x;
-                return Guid.TryParse(c.Value, out x) ? x : Guid.Empty;
-            })
-            .FirstOrDefault(guid => !Guid.Empty.Equals(guid));
+        var userId = await AuthenticationStateProvider.UserIdAsync();
         UserProjects = (await ProjectService.ProjectsForUserAsync(userId)).Projects;
+        StateHasChanged();
+    }
+
+    private async Task LoadCurrentTimeTrackingEntry()
+    {
+        var userId = await AuthenticationStateProvider.UserIdAsync();
+        TimeTrackingEntryDetail = await TimeTrackingService.CurrentTimeTrackingEntryAsync(userId);
         StateHasChanged();
     }
 
