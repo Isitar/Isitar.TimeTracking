@@ -11,7 +11,7 @@ namespace Isitar.TimeTracking.Domain.Entities
         public string Email { get; set; }
 
         public string Locale { get; set; }
-        
+
         public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 
         #region IAuditableEntity

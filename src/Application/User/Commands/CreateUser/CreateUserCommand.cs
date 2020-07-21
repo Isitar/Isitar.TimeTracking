@@ -3,7 +3,7 @@ namespace Isitar.TimeTracking.Application.User.Commands.CreateUser
     using System;
     using MediatR;
 
-    public class CreateUserCommand: IRequest
+    public class CreateUserCommand : IRequest
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

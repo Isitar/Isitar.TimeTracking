@@ -120,6 +120,12 @@
       <Content Update="Components\TimeTrackingEntry\TimeTrackingEntryCard.razor">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </Content>
+      <Content Update="Components\Layout\NavMenu.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+      <Content Update="Components\TimeTrackingEntry\TimeTrackingEntryReport.razor">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

@@ -17,11 +17,11 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
         [HttpPost(ApiRoutes.User.CreateProject, Name = nameof(UserProjectController) + "/" + nameof(CreateProjectAsync))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesBadRequestResponse]
-        public async Task<IActionResult> CreateProjectAsync(Guid id,  [FromForm] CreateProjectRequest createUserRequest)
+        public async Task<IActionResult> CreateProjectAsync(Guid id, [FromForm] CreateProjectRequest createUserRequest)
         {
             var projectId = Guid.NewGuid();
             var hasImage = null != createUserRequest.Image;
-            var ms = hasImage ?  new MemoryStream() : null;
+            var ms = hasImage ? new MemoryStream() : null;
             if (hasImage)
             {
                 await createUserRequest.Image.CopyToAsync(ms);
@@ -37,7 +37,7 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
             });
             return CreatedAtRoute($"{nameof(ProjectController)}/{nameof(ProjectController.SingleAsync)}", new {id = projectId}, null);
         }
-        
+
         [HttpGet(ApiRoutes.User.AllProjects, Name = nameof(UserProjectController) + "/" + nameof(AllProjectsAsync))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesBadRequestResponse]
@@ -45,7 +45,7 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
         {
             var res = await mediator.Send(new ProjectListQuery
             {
-                UserFilter = new HashSet<Guid> { id},
+                UserFilter = new HashSet<Guid> {id},
             });
             return Ok(res);
         }

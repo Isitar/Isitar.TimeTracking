@@ -17,8 +17,6 @@ namespace Isitar.TimeTracking.Application.Project.Commands.CreateProject
             RuleFor(x => x.ImageStreamFilename)
                 .NotEmpty()
                 .When(cmd => null != cmd.ImageStream);
-            
-            
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Isitar.TimeTracking.Application.Common.Entities
 
         public string ErrorsCompact()
         {
-            return string.Join(", ", this.Errors);
+            return string.Join(", ", Errors);
         }
     }
 

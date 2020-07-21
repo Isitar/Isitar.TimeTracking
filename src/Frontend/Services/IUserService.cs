@@ -7,5 +7,6 @@ namespace Isitar.TimeTracking.Frontend.Services
     public interface IUserService
     {
         public Task<Result> StopTrackingAsync(Guid userId);
+        public Task<Result> StartTrackingAsync(Guid userId, Guid projectId);
     }
 }

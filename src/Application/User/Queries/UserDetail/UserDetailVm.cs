@@ -2,7 +2,6 @@ namespace Isitar.TimeTracking.Application.User.Queries.UserDetail
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using AutoMapper;
     using Common.Mappings;
     using Domain.Entities;

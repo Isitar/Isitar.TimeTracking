@@ -6,12 +6,11 @@ namespace Isitar.TimeTracking.Application.Project.Queries.ProjectDetail
     using Common.Mappings;
     using Domain.Entities;
     using NodaTime;
-    using User.Queries.UserDetail;
 
     public class ProjectDetailVm : IMapFrom<Project>
     {
         public Guid UserId { get; set; }
-        
+
         public string Name { get; set; }
         public bool HasImage { get; set; }
 

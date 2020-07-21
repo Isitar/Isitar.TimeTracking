@@ -30,15 +30,13 @@ namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.ActiveTimeTr
                 .Where(tte => tte.UserId.Equals(request.UserId))
                 .ProjectTo<TimeTrackingEntryDetailVm>(mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
-            
+
             if (null == vm)
             {
-                throw new NotFoundException(Translation.TimeTrackingEntry, null);
+                throw new NotFoundException(Translation.TimeTrackingEntry, string.Empty);
             }
 
             return vm;
         }
-        
-        
     }
 }

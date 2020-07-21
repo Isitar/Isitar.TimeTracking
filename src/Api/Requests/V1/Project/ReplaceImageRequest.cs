@@ -5,7 +5,6 @@ namespace Isitar.TimeTracking.Api.Requests.V1.Project
 
     public class ReplaceImageRequest
     {
-        [FromForm(Name = nameof(Image))]
-        public IFormFile Image { get; set; }
+        [FromForm(Name = nameof(Image))] public IFormFile Image { get; set; }
     }
 }

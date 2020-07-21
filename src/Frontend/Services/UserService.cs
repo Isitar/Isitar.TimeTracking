@@ -24,5 +24,19 @@ namespace Isitar.TimeTracking.Frontend.Services
 
             return Result.Failure(await res.ErrorMessagesAsync());
         }
+
+        public async Task<Result> StartTrackingAsync(Guid userId, Guid projectId)
+        {
+            var res = await genericService.PostAsyncRaw($"user/{userId}/time-tracking-entry", new
+            {
+                ProjectId = projectId
+            });
+            if (res.IsSuccessStatusCode)
+            {
+                return Result.Success();
+            }
+
+            return Result.Failure(await res.ErrorMessagesAsync());
+        }
     }
 }

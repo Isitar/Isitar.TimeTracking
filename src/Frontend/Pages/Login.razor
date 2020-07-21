@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <button class="button is-success is-fullwidth" type="submit">
+                            <button class="button is-primary is-fullwidth" type="submit">
                                 Login
                             </button>
                         </div>
@@ -65,7 +65,7 @@
     protected string PasswordType => ShowPassword ? "text" : "password";
 
 
-    protected  async Task Authenticate()
+    protected async Task Authenticate()
     {
         var res = await AuthService.LoginAsync(Username, Password);
         if (res.Successful)

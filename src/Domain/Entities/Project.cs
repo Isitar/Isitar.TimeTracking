@@ -6,13 +6,12 @@ namespace Isitar.TimeTracking.Domain.Entities
 
     public class Project : IAuditableEntity
     {
-
         public virtual User User { get; set; }
         public Guid UserId { get; set; }
-        
+
         public string Name { get; set; }
         public string ImagePath { get; set; }
-        
+
         #region IAuditableEntity
 
         public Guid Id { get; set; }

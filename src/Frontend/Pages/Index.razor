@@ -4,38 +4,44 @@
 @using Isitar.TimeTracking.Application.Project.Queries.ProjectList
 @using Isitar.TimeTracking.Frontend.Services
 @attribute [Authorize]
-
-<section class="page-index">
-    <h1 class="title">Welcome Username</h1>
-    <div class="columns">
-        <div class="column">
-            @if (null != TimeTrackingEntryDetail)
-            {
-                <TimeTrackingEntryCard TimeTrackingEntryDetail="@TimeTrackingEntryDetail"/>
-            }
-            else
-            {
-                <p>Currently not working</p>
-            }
-        </div>
-    </div>
-
-    <ul class="columns is-multiline">
-        @foreach (var userProject in UserProjects)
-        {
-            <li class="column is-one-third-desktop is-half-tablet">
-                <ProjectCard Project="@userProject"/>
-            </li>
-        }
-        <li class="column is-one-quarter-widescreen is-one-third-desktop is-half-tablet">
-            <div class="new-bulk-order-box has-text-centered" @onclick="CreateProject">
-                <p>
-                    New Project
-                </p>
+<div class="page-index">
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Welcome Username</h1>
+            <div class="columns">
+                <div class="column">
+                    @if (null != TimeTrackingEntryDetail)
+                    {
+                        <TimeTrackingEntryCard TimeTrackingEntryDetail="@TimeTrackingEntryDetail" StoppedWorking="@(e => LoadCurrentTimeTrackingEntry())"/>
+                    }
+                    else
+                    {
+                        <p>Currently not working</p>
+                    }
+                </div>
             </div>
-        </li>
-    </ul>
-</section>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <h2 class="title">Your Projects</h2>
+            <ul class="columns is-multiline">
+                @foreach (var userProject in UserProjects)
+                {
+                    <li class="column is-one-third-desktop is-half-tablet">
+                        <ProjectCard Project="@userProject" WorkingOnChanged="@(e => LoadCurrentTimeTrackingEntry())"/>
+                    </li>
+                }
+            </ul>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <h2 class="title">Your day</h2>
+            <TimeTrackingEntryReport UserId="UserId"/>
+        </div>
+    </section>
+</div>
 
 @code
 {
@@ -43,10 +49,13 @@
 
     public IEnumerable<ProjectSlimDto> UserProjects { get; set; } = new ProjectSlimDto[0];
 
+    public Guid UserId { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            UserId = await AuthenticationStateProvider.UserIdAsync();
             await LoadUserProjectsAsync();
             await LoadCurrentTimeTrackingEntry();
         }
@@ -63,15 +72,13 @@
 
     private async Task LoadUserProjectsAsync()
     {
-        var userId = await AuthenticationStateProvider.UserIdAsync();
-        UserProjects = (await ProjectService.ProjectsForUserAsync(userId)).Projects;
+        UserProjects = (await ProjectService.ProjectsForUserAsync(UserId)).Projects;
         StateHasChanged();
     }
 
     private async Task LoadCurrentTimeTrackingEntry()
     {
-        var userId = await AuthenticationStateProvider.UserIdAsync();
-        TimeTrackingEntryDetail = await TimeTrackingService.CurrentTimeTrackingEntryAsync(userId);
+        TimeTrackingEntryDetail = await TimeTrackingService.CurrentTimeTrackingEntryAsync(UserId);
         StateHasChanged();
     }
 

@@ -5,8 +5,6 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Configurations
 
     public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     {
-        public void Configure(EntityTypeBuilder<AppUser> builder)
-        {
-        }
+        public void Configure(EntityTypeBuilder<AppUser> builder) { }
     }
 }

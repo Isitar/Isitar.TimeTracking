@@ -13,7 +13,7 @@ namespace Isitar.TimeTracking.Application.Common.Interfaces
         public DbSet<TimeTrackingEntry> TimeTrackingEntries { get; set; }
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-        
+
         public DatabaseFacade Database { get; }
     }
 }

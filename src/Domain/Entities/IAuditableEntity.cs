@@ -15,6 +15,5 @@ namespace Isitar.TimeTracking.Domain.Entities
         public Instant? UpdatedAt { get; set; }
 
         public ICollection<AuditTrailEntry> AuditTrailEntries { get; }
-        
     }
 }

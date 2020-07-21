@@ -1,7 +1,6 @@
 namespace Isitar.TimeTracking.Application.Project.Queries.ProjectList
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using MediatR;
 

@@ -38,6 +38,7 @@ namespace Isitar.TimeTracking.Api.Routes.V1
             public const string AllTimeTrackingEntries = UserBase + "/{id}/time-tracking-entry";
             public const string CurrentTimeTrackingEntry = UserBase + "/{id}/time-tracking-entry/current";
             public const string StartTracking = UserBase + "/{id}/time-tracking-entry";
+            public const string TrackingReport = UserBase + "/{id}/time-tracking-report";
         }
 
         public static class Project

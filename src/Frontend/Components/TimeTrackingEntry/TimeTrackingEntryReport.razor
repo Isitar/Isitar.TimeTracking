@@ -1,0 +1,34 @@
+@inherits TimeTrackingEntryReportBase
+
+@if (null != TimeTrackingEntryReportVm)
+{
+    <div>
+        <h2 class="title is-4">Report</h2>
+        <p>@TimeTrackingEntryReportVm.From - @TimeTrackingEntryReportVm.To</p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Project</th>
+                <th>Duration [h]</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var report in TimeTrackingEntryReportVm.TimeTrackingEntryReports)
+            {
+                <tr>
+                    <td>@report.ProjectName</td>
+                    <td>@Frontend.Common.Formatter.FromatDouble(report.TotalSeconds / 3600) h</td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Total</th>
+                <td>@Frontend.Common.Formatter.FromatDouble(TimeTrackingEntryReportVm.TimeTrackingEntryReports.Sum(tter => tter.TotalSeconds) / 3600) h</td>
+            </tr>
+            </tfoot>
+
+        </table>
+    </div>
+}

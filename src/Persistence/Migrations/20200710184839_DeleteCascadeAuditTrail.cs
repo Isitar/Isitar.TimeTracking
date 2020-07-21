@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Isitar.TimeTracking.Persistence.Migrations
+﻿namespace Isitar.TimeTracking.Persistence.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class DeleteCascadeAuditTrail : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

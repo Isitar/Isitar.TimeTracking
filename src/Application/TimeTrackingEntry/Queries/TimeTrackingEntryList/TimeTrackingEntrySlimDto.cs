@@ -5,7 +5,6 @@ namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTracking
     using Common.Mappings;
     using Domain.Entities;
     using NodaTime;
-    using TimeTrackingEntryDetail;
 
     public class TimeTrackingEntrySlimDto : IMapFrom<TimeTrackingEntry>
     {
@@ -18,6 +17,7 @@ namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Queries.TimeTracking
 
         public Guid ProjectId { get; set; }
         public string ProjectName { get; set; }
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<TimeTrackingEntry, TimeTrackingEntrySlimDto>()

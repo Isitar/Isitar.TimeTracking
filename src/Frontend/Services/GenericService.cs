@@ -1,7 +1,6 @@
 namespace Isitar.TimeTracking.Frontend.Services
 {
     using System;
-    using System.Diagnostics;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
@@ -9,6 +8,9 @@ namespace Isitar.TimeTracking.Frontend.Services
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
     using Common;
+    using Exceptions;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Logging;
 
     public class GenericService : IGenericService
     {
@@ -16,6 +18,7 @@ namespace Isitar.TimeTracking.Frontend.Services
         private readonly ILocalStorageService localStorageService;
         private readonly JsonSerializerOptions jsonSerializerOptions;
         private readonly IAuthService authService;
+        private readonly ILogger<GenericService> logger;
 
         private static object lockObj = new object();
 
@@ -23,12 +26,14 @@ namespace Isitar.TimeTracking.Frontend.Services
         public GenericService(HttpClient httpClient,
             ILocalStorageService localStorageService,
             JsonSerializerOptions jsonSerializerOptions,
-            IAuthService authService)
+            IAuthService authService,
+            ILogger<GenericService> logger)
         {
             this.httpClient = httpClient;
             this.localStorageService = localStorageService;
             this.jsonSerializerOptions = jsonSerializerOptions;
             this.authService = authService;
+            this.logger = logger;
         }
 
         public Task<HttpResponseMessage> GetAsyncRaw(string uri)
@@ -106,19 +111,14 @@ namespace Isitar.TimeTracking.Frontend.Services
                     if (refreshResult.Successful)
                     {
                         response = await httpClient.SendAsync(await BuildRequestMessage(method, uri, data));
-                        if (response.IsSuccessStatusCode)
-                        {
-                            return response;
-                        }
                     }
                 }
 
-                var err = await response.Content.ReadAsStringAsync();
-                throw new Exception($"[{response.StatusCode}] error: {err}");
+                return response;
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name} : {e.Message}");
+                logger.LogError(e, "Exception while calling service");
                 throw;
             }
         }
@@ -128,13 +128,25 @@ namespace Isitar.TimeTracking.Frontend.Services
             try
             {
                 var response = await CallApiRaw(method, uri, data);
-                var jsonResult = await response.Content.ReadAsStringAsync();
-                var json = JsonSerializer.Deserialize<T>(jsonResult, jsonSerializerOptions);
+                var responseBody = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    if ((int) response.StatusCode == StatusCodes.Status404NotFound)
+                    {
+                        throw new HttpNotFoundException(responseBody);
+                    }
+                }
+
+                var json = JsonSerializer.Deserialize<T>(responseBody, jsonSerializerOptions);
                 return json;
+            }
+            catch (HttpNotFoundException)
+            {
+                throw;
             }
             catch (Exception e)
             {
-                Debug.WriteLine($"{e.GetType().Name} : {e.Message}");
+                logger.LogError(e, "Exception while parsing answer to json");
                 throw;
             }
         }

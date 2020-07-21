@@ -1,8 +1,6 @@
 namespace Isitar.TimeTracking.Infrastructure.Identity
 {
     using System;
-    using Application.Common.Enums;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +27,5 @@ namespace Isitar.TimeTracking.Infrastructure.Identity
             //         }
             //     });
         }
-        
     }
 }

@@ -12,7 +12,7 @@ namespace Isitar.TimeTracking.Persistence.Configurations
                 .WithMany(u => u.Projects)
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
             builder.HasOne(e => e.CreatedBy)
                 .WithMany()
                 .HasForeignKey(e => e.CreatedById);

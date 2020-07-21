@@ -7,11 +7,12 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
     using Application.TimeTrackingEntry.Commands.StopTrackingForUser;
     using Application.TimeTrackingEntry.Queries.ActiveTimeTrackingEntryDetail;
     using Application.TimeTrackingEntry.Queries.TimeTrackingEntryList;
+    using Application.TimeTrackingEntry.Queries.TimeTrackingEntryReport;
     using Attributes;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Requests.V1.TimeTracking;
-    using Requests.V1.User;
+    using Requests.V1.UserTimeTrackingEntry;
     using Routes.V1;
 
     public class UserTimeTrackingEntryController : ApiController
@@ -76,6 +77,22 @@ namespace Isitar.TimeTracking.Api.Controllers.V1
                 });
                 return Ok();
             }
+        }
+
+
+        [HttpGet(ApiRoutes.User.TrackingReport, Name = nameof(UserTimeTrackingEntryController) + "/" + nameof(TrackingReportAsync))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesBadRequestResponse]
+        public async Task<ActionResult<TimeTrackingEntryReportVm>> TrackingReportAsync(Guid id, [FromQuery] TimeTrackingReportRequest request)
+        {
+            var timeTrackingEntryReport = await mediator.Send(new TimeTrackingEntryReportQuery
+            {
+                UserId = id,
+                From = request.From,
+                To = request.To,
+            });
+
+            return Ok(timeTrackingEntryReport);
         }
     }
 }

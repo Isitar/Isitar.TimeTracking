@@ -12,7 +12,6 @@ namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Commands.StopTrackin
             RuleFor(x => x.UserId)
                 .Must(userId => dbContext.Users.Any(u => u.Id.Equals(userId)))
                 .WithMessage(cmd => Translation.NotFoundException.Replace("{name}", Translation.User).Replace("{key}", cmd.UserId.ToString()));
-
-        }        
+        }
     }
 }

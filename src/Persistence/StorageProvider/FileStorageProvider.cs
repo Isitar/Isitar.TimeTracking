@@ -27,13 +27,14 @@ namespace Isitar.TimeTracking.Persistence.StorageProvider
             try
             {
                 var storageFilename = CreateFilename(filename);
-                
+
 
                 var fullSavePath = CreatePath(storageFilename);
                 if (!Directory.Exists(Path.GetDirectoryName(fullSavePath)))
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(fullSavePath));
                 }
+
                 var fs = File.Create(fullSavePath);
                 content.Seek(0, SeekOrigin.Begin);
                 await content.CopyToAsync(fs);

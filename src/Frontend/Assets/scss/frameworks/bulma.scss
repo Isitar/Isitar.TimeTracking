@@ -43,3 +43,8 @@ $title-color: $primary;
 @import "../../node_modules/bulma/sass/layout/hero";
 @import "../../node_modules/bulma/sass/layout/section";
 @import "../../node_modules/bulma/sass/layout/footer";
+
+
+.is-clickable {
+  cursor: pointer;
+}

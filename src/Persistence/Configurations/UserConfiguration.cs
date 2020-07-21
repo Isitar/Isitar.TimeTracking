@@ -18,7 +18,7 @@ namespace Isitar.TimeTracking.Persistence.Configurations
             builder.HasOne(e => e.UpdatedBy)
                 .WithMany()
                 .HasForeignKey(e => e.UpdatedById);
-            
+
             builder.HasMany(e => e.AuditTrailEntries)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);

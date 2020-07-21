@@ -4,7 +4,6 @@ namespace Isitar.TimeTracking.Application.Common.Interfaces
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Entities;
-    using Enums;
 
     public interface IIdentityService
     {

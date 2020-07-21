@@ -2,15 +2,13 @@ namespace Isitar.TimeTracking.Frontend.Services
 {
     using System;
     using System.Threading.Tasks;
-    using Application.Common.Exceptions;
-    using Application.Common.Interfaces;
     using Application.TimeTrackingEntry.Queries.TimeTrackingEntryDetail;
-    using Application.TimeTrackingEntry.Queries.TimeTrackingEntryRapport;
+    using Application.TimeTrackingEntry.Queries.TimeTrackingEntryReport;
+    using Exceptions;
     using NodaTime;
 
     public class TimeTrackingService : ITimeTrackingService
     {
-        private readonly ICurrentUserService currentUserService;
         private readonly IGenericService genericService;
 
         public TimeTrackingService(IGenericService genericService)
@@ -18,21 +16,29 @@ namespace Isitar.TimeTracking.Frontend.Services
             this.genericService = genericService;
         }
 
-        public Task<TimeTrackingEntryDetailVm> CurrentTimeTrackingEntryAsync(Guid userId)
+        public async Task<TimeTrackingEntryDetailVm> CurrentTimeTrackingEntryAsync(Guid userId)
         {
             try
             {
-                return genericService.GetAsync<TimeTrackingEntryDetailVm>($"user/{userId}/time-tracking-entry/current");
+                return await genericService.GetAsync<TimeTrackingEntryDetailVm>($"user/{userId}/time-tracking-entry/current");
             }
-            catch (NotFoundException)
+            catch (HttpNotFoundException)
             {
                 return null;
             }
         }
 
-        public Task<TimeTrackingEntryRapportVm> RapportAsync(Guid userId, Instant @from, Instant to)
+        public async Task<TimeTrackingEntryReportVm> ReportAsync(Guid userId, Instant @from, Instant to)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var url = $"user/{userId}/time-tracking-report?from={from.ToString()}&to={to.ToString()}";
+                return await genericService.GetAsync<TimeTrackingEntryReportVm>(url);
+            }
+            catch (HttpNotFoundException)
+            {
+                return null;
+            }
         }
     }
 }

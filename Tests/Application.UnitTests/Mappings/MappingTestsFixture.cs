@@ -7,10 +7,7 @@ namespace Application.UnitTests.Mappings
     {
         public MappingTestsFixture()
         {
-            ConfigurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });
+            ConfigurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
 
             Mapper = ConfigurationProvider.CreateMapper();
         }

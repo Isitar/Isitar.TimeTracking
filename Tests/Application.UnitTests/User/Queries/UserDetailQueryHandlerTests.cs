@@ -18,7 +18,7 @@ namespace Application.UnitTests.User.Queries
             var createdId = Guid.NewGuid();
             var updatedId = Guid.NewGuid();
             var id = Guid.NewGuid();
-            await TimeTrackingDbContext.Users.AddAsync( new User
+            await TimeTrackingDbContext.Users.AddAsync(new User
             {
                 Acronym = "lpa",
                 Name = "Pascal Lüscher",
@@ -57,7 +57,7 @@ namespace Application.UnitTests.User.Queries
             };
             var queryHandler = new UserDetailQueryHandler(TimeTrackingDbContext, Mapper);
             var result = await queryHandler.Handle(q, CancellationToken.None);
-            
+
             Assert.NotNull(result);
             // cannot check created by since savechanges reverted it.
             Assert.Equal("updator", result.UpdatedByName);

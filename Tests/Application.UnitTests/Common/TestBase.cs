@@ -13,10 +13,7 @@ namespace Application.UnitTests.Common
         public TestBase()
         {
             TimeTrackingDbContext = TimeTrackingDbContextFactory.Create();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });
+            var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
 
             Mapper = configurationProvider.CreateMapper();
         }

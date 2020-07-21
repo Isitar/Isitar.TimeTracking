@@ -1,12 +1,10 @@
 namespace Isitar.TimeTracking.Application.Common.Behaviors
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Authorization;
     using Exceptions;
-    using FluentValidation;
     using MediatR;
 
     public class RequestAuthorizationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
@@ -26,8 +24,9 @@ namespace Isitar.TimeTracking.Application.Common.Behaviors
                 if (!await authorizer.AuthorizeAsync(request))
                 {
                     throw new UnauthorizedException();
-                } 
+                }
             }
+
             return await next();
         }
     }

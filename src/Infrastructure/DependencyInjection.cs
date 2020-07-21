@@ -52,7 +52,7 @@ namespace Isitar.TimeTracking.Infrastructure
                 ClockSkew = TimeSpan.Zero,
             };
             services.AddSingleton(tokenValidationParameters);
-            
+
             services.AddAuthentication(config =>
                 {
                     config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;

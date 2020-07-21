@@ -1,7 +1,6 @@
 namespace Isitar.TimeTracking.Application.TimeTrackingEntry.Commands.StartTrackingForProject
 {
     using System;
-    using Domain.Entities;
     using MediatR;
 
     public class StartTrackingForProjectCommand : IRequest

@@ -4,16 +4,9 @@
 <div id="app">
     <NavMenu/>
 
-
-    <div id="content" class="container mt-3 is-fluid">
+    <div id="content">
         @Body
     </div>
 
-    <footer class="footer" v-if="showFooter">
-        <div class="content has-text-centered">
-            <p>
-                <strong>Doener Order</strong> by <a href="https://github.com/isitar">Isitar</a>
-            </p>
-        </div>
-    </footer>
+    <LayoutFooter/>
 </div>

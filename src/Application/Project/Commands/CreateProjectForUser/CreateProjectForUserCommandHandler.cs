@@ -9,7 +9,7 @@ namespace Isitar.TimeTracking.Application.Project.Commands.CreateProject
 
     public class CreateProjectForUserCommandHandler : IRequestHandler<CreateProjectForUserCommand>
     {
-        private readonly  ITimeTrackingDbContext dbContext;
+        private readonly ITimeTrackingDbContext dbContext;
         private readonly IStorageProvider storageProvider;
 
         public CreateProjectForUserCommandHandler(ITimeTrackingDbContext dbContext, IStorageProvider storageProvider)
