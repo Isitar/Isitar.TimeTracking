@@ -19,5 +19,11 @@ namespace Isitar.TimeTracking.Application.Common.Interfaces
         public Task<Result> AssignRoleAsync(Guid userId, string roleName);
         public Task<Result> RevokeRoleAsync(Guid userId, string roleName);
         public Task<Result<IEnumerable<string>>> RolesAsync(Guid userId);
+
+        /// <summary>
+        /// Checking if any user exists
+        /// </summary>
+        /// <returns></returns>
+        public Task<Result<bool>> HasUsers();
     }
 }

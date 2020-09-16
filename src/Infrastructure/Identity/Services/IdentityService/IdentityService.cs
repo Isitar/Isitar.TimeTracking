@@ -233,6 +233,12 @@ namespace Isitar.TimeTracking.Infrastructure.Identity.Services.IdentityService
             return Result<IEnumerable<string>>.Success(roles);
         }
 
+        public async Task<Result<bool>> HasUsers()
+        {
+            var hasUsers = await userManager.Users.AnyAsync();
+            return Result<bool>.Success(hasUsers);
+        }
+
         private async Task<Result<AppUser>> FindUserAsync(Guid userId)
         {
             var user = await userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);

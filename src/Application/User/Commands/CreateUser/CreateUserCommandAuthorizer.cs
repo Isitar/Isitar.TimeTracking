@@ -17,6 +17,11 @@ namespace Isitar.TimeTracking.Application.User.Commands.CreateUser
 
         public override async Task<bool> AuthorizeAsync(CreateUserCommand request)
         {
+            var hasUsersResult = await identityService.HasUsers(); 
+            if (hasUsersResult.Successful && !hasUsersResult.Data)
+            {
+                return true;
+            }
             if (!(CurrentUserService.IsAuthenticated && CurrentUserService.UserId.HasValue))
             {
                 return false;
