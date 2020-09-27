@@ -59,7 +59,7 @@ namespace Isitar.TimeTracking.Api
                 app.UseSwaggerWithUi();
             }
 
-            app.UseCors();
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 
