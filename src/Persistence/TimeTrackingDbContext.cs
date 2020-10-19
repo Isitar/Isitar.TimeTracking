@@ -1,12 +1,14 @@
 namespace Isitar.TimeTracking.Persistence
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Application.Common.Interfaces;
     using Common;
     using Domain.Entities;
+    using JsonHandlers;
     using Microsoft.EntityFrameworkCore;
     using Newtonsoft.Json;
 
@@ -29,7 +31,16 @@ namespace Isitar.TimeTracking.Persistence
         /// <returns></returns>
         private static string SerializeObject(object obj)
         {
-            return JsonConvert.SerializeObject(obj, Formatting.Indented, new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore});
+            using var writer = new StringWriter();
+            var settings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, MaxDepth = 1 };
+            using (var jsonWriter = new DepthJsonTextWriter(writer))
+            {
+                var resolver = new CustomContractResolver(() => jsonWriter.CurrentDepth <= settings.MaxDepth);
+                settings.ContractResolver = resolver;
+                JsonSerializer.Create(settings).Serialize(jsonWriter, obj);
+            }
+
+            return writer.ToString();
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
